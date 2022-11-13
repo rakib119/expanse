@@ -1,3 +1,6 @@
+@php
+    $role_id = auth()->user()->role_id;
+@endphp
 @extends('layouts.app')
 
 @section('main-content')
@@ -9,7 +12,7 @@
                     <form action="{{ route('user.store') }}" method='post'>
                         @csrf
                         <div class="row">
-                            <div class="col-lg-6 col-sm-12 mb-3">
+                            <div class="col-lg-4 col-sm-12 mb-3">
                                 <label for="name" class="text-capitalize"> Name <span>*</span></label>
                                 <input required type="text" name="name"
                                     class="form-control @error('name') is-invalid @enderror " value="{{ old('name') }}"
@@ -18,7 +21,23 @@
                                     <span> {{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-lg-6 col-sm-12 mb-3">
+                            <div class="col-lg-4 col-sm-12 mb-3">
+                                <label for="role" class="text-capitalize"> Role <span>*</span></label>
+                                <select name="role" id="role" required
+                                    class="form-control @error('name') is-invalid @enderror ">
+                                    @if ($role_id == 1)
+                                        <option {{ old('role') == 2 ?? 'selected' }} value="2">Company</option>
+                                    @elseif ($role_id == 2)
+                                        <option {{ old('role') == 3 ?? 'selected' }} value="3">Manager</option>
+                                    @elseif ($role_id == 3)
+                                        <option {{ old('role') == 4 ?? 'selected' }} value="4">Sales Executive</option>
+                                    @endif
+                                </select>
+                                @error('role')
+                                    <span> {{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-lg-4 col-sm-12 mb-3">
                                 <label for="email " class="text-capitalize"> email <span>*</span></label>
                                 <input required type="email" name="email"
                                     class="form-control @error('email') is-invalid @enderror " value="{{ old('email') }}"

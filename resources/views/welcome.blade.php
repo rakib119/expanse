@@ -120,7 +120,7 @@
             <!-- ============================================================== -->
             <!-- product sales  -->
             <!-- ============================================================== -->
-            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 mb-4">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-4">
                 <div class="card shadow-sm h-100">
                     <div class="card-header">
                         <h5 class="mb-0"> Product Sales</h5>
@@ -491,14 +491,8 @@
                         <a href="#" class="btn-primary-link">View Details</a>
                     </div>
                 </div>
-                <!-- ============================================================== -->
-                <!-- end social source  -->
-                <!-- ============================================================== -->
             </div>
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12 mb-4">
-                <!-- ============================================================== -->
-                <!-- sales traffice source  -->
-                <!-- ============================================================== -->
                 <div class="card shadow-sm h-100">
                     <h5 class="card-header"> Sales By Traffic Source</h5>
                     <div class="card-body p-0">
@@ -549,12 +543,6 @@
                     </div>
                 </div>
             </div>
-            <!-- ============================================================== -->
-            <!-- end sales traffice source  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- sales traffic country source  -->
-            <!-- ============================================================== -->
             <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 mb-4">
                 <div class="card shadow-sm h-100">
                     <h5 class="card-header">Sales By Country Traffic Source</h5>
@@ -599,7 +587,7 @@
         const ctx = document.getElementById('myChart');
         const myChart = new Chart(ctx, {
 
-            type: 'chart',
+            type: 'bar',
             data: {
                 labels: [<?= '"' . implode('","', $product_name) . '"' ?>],
                 datasets: [{

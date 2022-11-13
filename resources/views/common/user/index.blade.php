@@ -8,7 +8,7 @@
 
             <div class="col-12 mb-4">
                 <div class="card shadow-sm mb-5">
-                    <h5 class="card-header">Company List</h5>
+                    <h5 class="card-header">{{ auth()->user()->role_id == 1 ? 'Company' : 'Employee'}} List</h5>
                     <div class="card-body">
                         <table class="table" id='myTable'>
                             <thead>
