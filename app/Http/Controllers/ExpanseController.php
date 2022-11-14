@@ -14,7 +14,12 @@ class ExpanseController extends Controller
      */
     public function index()
     {
-        //
+         $expanses = Expanse::join('expanse_categories','expanse_categories.id','=','expanses.cat_id')
+         ->where('expanses.company_id', auth()->id())
+         ->select('expanses.remarks','expanses.amount','expanse_categories.e_cat_name as category')
+         ->get();
+        return view('company.expanse.index',compact('expanses'));
+
     }
 
     /**

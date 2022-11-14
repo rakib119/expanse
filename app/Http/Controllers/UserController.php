@@ -52,16 +52,34 @@ class UserController extends Controller
             'name' => 'required|max:20',
             'email' => 'required|max:30',
             'mobile' => 'nullable|max:30',
+            'role' => 'required',
             'password' => 'required',
         ]);
-        User::insert([
-            'name' => $request->name,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
-            'password' => Hash::make($request->password),
-            'created_at' => now(),
-        ]);
-        return back()->with('success', 'submited successfully');
+
+        $auth_role = auth()->user()->role_id;
+        $error_flag = 0;
+        if ($auth_role == 1 && $request->role != 2) {
+            $error_flag = 1;
+        }elseif ($auth_role == 2 && $request->role != 3 ) {
+            $error_flag = 1;
+        }elseif ($auth_role == 3 && $request->role != 4 ) {
+            $error_flag = 1;
+        }elseif($auth_role==4){
+            abort(404);
+        }
+        if ($error_flag) {
+            return back()->withErrors(['role' => 'Invalid Role']);
+        } else {
+            User::insert([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone_number' => $request->mobile,
+                'role_id' => $request->role,
+                'password' => Hash::make($request->password),
+                'created_at' => now(),
+            ]);
+            return back()->with('success', 'submited successfully');
+        }
     }
 
     /**

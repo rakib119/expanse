@@ -22,7 +22,7 @@
                         <h5 class="text-muted mb-4">Total Employee</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
-                                <h1 class="font-weight-bold">335423</h1>
+                                <h1 class="font-weight-bold">{{$figers->total_employee}}</h1>
                             </div>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                         <h5 class="text-muted mb-4">Total Product</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
-                                <h1 class="font-weight-bold">1245</h1>
+                                <h1 class="font-weight-bold">{{$figers->total_product}}</h1>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                         <h5 class="text-muted mb-4">Total Customer</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
-                                <h1 class="font-weight-bold">13000</h1>
+                                <h1 class="font-weight-bold">{{$figers->total_customer}}</h1>
                             </div>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                         <h5 class="text-muted mb-4">Order<span style='font-size:9px'>(Current month)</span></h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
-                                <h1 class="font-weight-bold">1340</h1>
+                                <h1 class="font-weight-bold">{{$figers->total_order}}</h1>
                             </div>
                         </div>
                     </div>

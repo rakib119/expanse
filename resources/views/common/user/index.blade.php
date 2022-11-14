@@ -1,3 +1,6 @@
+@php
+    $role_id = auth()->user()->role_id;
+@endphp
 @extends('layouts.app')
 @section('css')
     <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
@@ -8,7 +11,7 @@
 
             <div class="col-12 mb-4">
                 <div class="card shadow-sm mb-5">
-                    <h5 class="card-header">{{ auth()->user()->role_id == 1 ? 'Company' : 'Employee'}} List</h5>
+                    <h5 class="card-header">{{ $role_id == 1 ? 'Company' : 'Employee' }} List</h5>
                     <div class="card-body">
                         <table class="table" id='myTable'>
                             <thead>
@@ -17,16 +20,32 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Phone Number</th>
+                                    @if ($role_id == 2)
+                                        <th scope="col">Role</th>
+                                    @endif
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($users as $user)
+                                    @php
+                                        $user_role = $user->role_id;
+                                        $role = DB::table('roles')
+                                            ->where('role_id', $user_role)
+                                            ->first();
+                                        $role = $role ? $role->role_name : 'unknown';
+
+                                        $bg_color = $user_role == 3 ? 'bg-success' : ($user_role == 4 ? 'bg-secondary' : 'bg-danger');
+                                    @endphp
                                     <tr>
-                                        <th scope="row">{{ $user->iterete }}</th>
+                                        <th scope="row">{{ $loop->iteration }}</th>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email ? $user->email : 'N/A' }}</td>
                                         <td>{{ $user->phone_number ? $user->phone_number : 'N/A' }}</td>
+                                        @if ($role_id == 2)
+                                            <th scope="col"> <span
+                                                    class="badge text-light {{ $bg_color }}">{{$role }}</span> </th>
+                                        @endif
                                         <td>
                                             <div class="dropdown show">
                                                 <a class="btn btn-primary dropdown-toggle" href="#" role="button"

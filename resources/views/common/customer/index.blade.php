@@ -13,10 +13,11 @@
                 <div class="card shadow-sm mb-5">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
-                            <h5  > Product List</h5>
+                            <h5> Customer List</h5>
                         </div>
                         <div>
-                            <a href="{{ route('product.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add Product</a>
+                            <a href="{{ route('customer.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Create
+                                Order</a>
                         </div>
 
                     </div>
@@ -25,19 +26,21 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">name</th>
-                                    <th scope="col">price</th>
-                                    <th scope="col">Category</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Phone Number</th>
+                                    <th scope="col">Created By</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($products as $product)
+                                @foreach ($customers as $customer)
                                     <tr>
-                                        <th scope="row">{{$loop->iteration }}</th>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->price }}</td>
-                                        <td>{{ $product->p_cat_name }}</td>
+                                        <th scope="row">{{ $loop->iteration }}</th>
+                                        <td>{{ $customer->name }}</td>
+                                        <td>{{ $customer->email }}</td>
+                                        <td>{{ $customer->phone_number }}</td>
+                                        <td> <a href="">{{ $customer->created_by }}</a> </td>
 
                                         <td>
                                             <div class="dropdown show">

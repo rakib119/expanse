@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('assets/libs/fullcalendar/main.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('assets/libs/quill/dist/quill.snow.css') }} ">
- 
+
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/theme.min.css') }}">
     <title> @yield('page-title') {{ env('APP_NAME') }}</title>
@@ -100,6 +100,27 @@
 
     <!-- Theme JS -->
     {{-- <script src="{{ asset('assets/js/theme.min.js') }}"></script> --}}
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('success'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            Toast.fire({
+                icon: 'success',
+                title: '{{ session('success') }}'
+            })
+        </script>
+    @endif
     @yield('javascript')
 </body>
 

@@ -13,10 +13,11 @@
                 <div class="card shadow-sm mb-5">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
-                            <h5  > Product List</h5>
+                            <h5> Order List</h5>
                         </div>
                         <div>
-                            <a href="{{ route('product.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add Product</a>
+                            <a href="{{ route('order.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Create
+                                Order</a>
                         </div>
 
                     </div>
@@ -25,19 +26,19 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">name</th>
-                                    <th scope="col">price</th>
-                                    <th scope="col">Category</th>
+                                    <th scope="col">Customer Name</th>
+                                    <th scope="col">Created By</th>
+                                    <th scope="col">Order Amount</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($products as $product)
+                                @foreach ($orders as $order)
                                     <tr>
-                                        <th scope="row">{{$loop->iteration }}</th>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->price }}</td>
-                                        <td>{{ $product->p_cat_name }}</td>
+                                        <th scope="row">{{ $loop->iteration }}</th>
+                                        <td>{{ $order->customer_name }}</td>
+                                        <td> <a href="">{{ $order->created_by }}</a> </td>
+                                        <td>{{ $order->order_amount }}</td>
 
                                         <td>
                                             <div class="dropdown show">

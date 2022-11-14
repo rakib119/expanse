@@ -13,10 +13,11 @@
                 <div class="card shadow-sm mb-5">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
-                            <h5  > Product List</h5>
+                            <h5> Expanse List</h5>
                         </div>
                         <div>
-                            <a href="{{ route('product.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add Product</a>
+                            <a href="{{ route('expanse.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add
+                                Expanse</a>
                         </div>
 
                     </div>
@@ -25,19 +26,21 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">name</th>
-                                    <th scope="col">price</th>
                                     <th scope="col">Category</th>
+                                    <th scope="col">Remarks</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Created By</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($products as $product)
+                                @foreach ($expanses as $expanse)
                                     <tr>
-                                        <th scope="row">{{$loop->iteration }}</th>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->price }}</td>
-                                        <td>{{ $product->p_cat_name }}</td>
+                                        <th scope="row">{{ $loop->iteration }}</th>
+                                        <td>{{ $expanse->category }}</td>
+                                        <td>{{ $expanse->remarks }}</td>
+                                        <td>{{ $expanse->amount }}</td>
+                                        <td> <a href="">{{ $expanse->created_by }}</a> </td>
 
                                         <td>
                                             <div class="dropdown show">

@@ -14,7 +14,12 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        $customers = Customer::join('users','users.id','=','customers.created_by')
+            ->where('customers.company_id', auth()->id())
+            ->orderBy('customers.id', 'desc')
+            ->select( 'users.name as created_by','customers.name','customers.email','customers.phone_number')
+            ->get();
+        return view('common.customer.index', compact('customers'));
     }
 
     /**

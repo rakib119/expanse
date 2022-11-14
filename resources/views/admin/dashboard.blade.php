@@ -22,7 +22,7 @@
                     <h5 class="text-muted mb-4">Total Users</h5>
                     <div class="d-flex justify-content-between">
                         <div class="metric-value">
-                            <h1 class="font-weight-bold">335423</h1>
+                            <h1 class="font-weight-bold">{{$figers->total_user}}</h1>
                         </div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                     <h5 class="text-muted mb-4">Total Comapany</h5>
                     <div class="d-flex justify-content-between">
                         <div class="metric-value">
-                            <h1 class="font-weight-bold">1245</h1>
+                            <h1 class="font-weight-bold">{{$figers->total_company}}</h1>
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     <h5 class="text-muted mb-4">Total Manager</h5>
                     <div class="d-flex justify-content-between">
                         <div class="metric-value">
-                            <h1 class="font-weight-bold">13000</h1>
+                            <h1 class="font-weight-bold">{{$figers->total_manager}}</h1>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                     <h5 class="text-muted mb-4">Total Sales Executive</h5>
                     <div class="d-flex justify-content-between">
                         <div class="metric-value">
-                            <h1 class="font-weight-bold">1340</h1>
+                            <h1 class="font-weight-bold">{{$figers->total_sales_executive}}</h1>
                         </div>
                     </div>
                 </div>

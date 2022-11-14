@@ -24,7 +24,7 @@
                 <a class="nav-link" href="">Category</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="">Expanse</a>
+                <a class="nav-link" href="{{route('expanse.index')}}">Expanse</a>
             </li>
         </ul>
     </div>
@@ -34,11 +34,12 @@
         aria-controls="Product_sub_menu"><i class="fa fa-fw fa-user-circle"></i>Product</a>
     <div id="Product_sub_menu" class="collapse submenu">
         <ul class="nav flex-column">
+
             <li class="nav-item">
-                <a class="nav-link" href="">Create</a>
+                <a class="nav-link" href="{{route('product.create')}}">Create</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="">List</a>
+                <a class="nav-link" href="{{route('product.index')}}">List</a>
             </li>
         </ul>
     </div>
@@ -49,16 +50,16 @@
     <div id="orders_sub_menu" class="collapse submenu">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="">Create</a>
+                <a class="nav-link" href="{{route('order.create')}}">Create</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="">List</a>
+                <a class="nav-link" href="{{route('order.index')}}">List</a>
             </li>
         </ul>
     </div>
 </li>
 <li class="nav-item ">
-    <a class="nav-link" href=""><i class="fa fa-fw fa-user-circle"></i>Customers</a>
+    <a class="nav-link" href="{{route('customer.index')}}"><i class="fa fa-fw fa-user-circle"></i>Customers</a>
 </li>
 
 

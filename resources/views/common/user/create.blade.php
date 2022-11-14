@@ -18,7 +18,7 @@
                                     class="form-control @error('name') is-invalid @enderror " value="{{ old('name') }}"
                                     id="name">
                                 @error('name')
-                                    <span> {{ $message }}</span>
+                                    <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-lg-4 col-sm-12 mb-3">
@@ -34,7 +34,7 @@
                                     @endif
                                 </select>
                                 @error('role')
-                                    <span> {{ $message }}</span>
+                                    <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-lg-4 col-sm-12 mb-3">
@@ -43,7 +43,7 @@
                                     class="form-control @error('email') is-invalid @enderror " value="{{ old('email') }}"
                                     id="email ">
                                 @error('email')
-                                    <span> {{ $message }}</span>
+                                    <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
@@ -52,7 +52,7 @@
                                     class="form-control @error('mobile') is-invalid @enderror " value="{{ old('mobile') }}"
                                     id="mobile">
                                 @error('mobile')
-                                    <span> {{ $message }}</span>
+                                    <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
@@ -61,7 +61,7 @@
                                     class="form-control @error('password') is-invalid @enderror "
                                     value="{{ old('password') }}" id="password">
                                 @error('password')
-                                    <span> {{ $message }}</span>
+                                    <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -69,8 +69,8 @@
 
                             <div class="col-sm-12 pl-0">
                                 <p class="text-right">
-                                    <button type="submit" class="btn btn-space btn-primary">Submit</button>
                                     <button class="btn btn-space btn-secondary">Cancel</button>
+                                    <button type="submit" class="btn btn-space btn-primary">Submit</button>
                                 </p>
                             </div>
                         </div>

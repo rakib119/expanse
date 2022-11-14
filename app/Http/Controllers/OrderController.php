@@ -14,7 +14,13 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::join('customers', 'orders.customer_id', '=', 'customers.id')
+            ->join('users','users.id','=','orders.created_by')
+            ->where('orders.company_id', auth()->id())
+            ->orderBy('orders.id', 'desc')
+            ->select( 'users.name as created_by','customers.name as customer_name','orders.order_amount')
+            ->get();
+        return view('common.order.index', compact('orders'));
     }
 
     /**
