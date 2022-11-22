@@ -1,5 +1,6 @@
 @php
     $role_id = auth()->user()->role_id;
+    $customers_active = true;
 @endphp
 @extends('layouts.app')
 @section('css')
@@ -29,7 +30,10 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Phone Number</th>
-                                    <th scope="col">Created By</th>
+                                    @if (auth()->user()->role_id == 2)
+                                        <th scope="col">Created By</th>
+                                    @endif
+                                    <th scope="col">Created At</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -40,8 +44,10 @@
                                         <td>{{ $customer->name }}</td>
                                         <td>{{ $customer->email }}</td>
                                         <td>{{ $customer->phone_number }}</td>
-                                        <td> <a href="">{{ $customer->created_by }}</a> </td>
-
+                                        @if (auth()->user()->role_id == 2)
+                                            <td> <a href="">{{ $customer->created_by }}</a> </td>
+                                        @endif
+                                        <td>{{ $customer->created_at->format('d M Y') }}</td>
                                         <td>
                                             <div class="dropdown show">
                                                 <a class="btn btn-primary dropdown-toggle" href="#" role="button"

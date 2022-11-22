@@ -1,4 +1,5 @@
 @php
+    $product_active = true;
     $role_id = auth()->user()->role_id;
 @endphp
 @extends('layouts.app')
@@ -13,10 +14,11 @@
                 <div class="card shadow-sm mb-5">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
-                            <h5  > Product List</h5>
+                            <h5> Product List</h5>
                         </div>
                         <div>
-                            <a href="{{ route('product.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add Product</a>
+                            <a href="{{ route('product.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add
+                                Product</a>
                         </div>
 
                     </div>
@@ -34,7 +36,7 @@
                             <tbody>
                                 @foreach ($products as $product)
                                     <tr>
-                                        <th scope="row">{{$loop->iteration }}</th>
+                                        <th scope="row">{{ $loop->iteration }}</th>
                                         <td>{{ $product->name }}</td>
                                         <td>{{ $product->price }}</td>
                                         <td>{{ $product->p_cat_name }}</td>

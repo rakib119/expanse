@@ -22,7 +22,7 @@
                         <h5 class="text-muted mb-4">Total Employee</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
-                                <h1 class="font-weight-bold">{{$figers->total_employee}}</h1>
+                                <h1 class="font-weight-bold">{{ $figers->total_employee }}</h1>
                             </div>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                         <h5 class="text-muted mb-4">Total Product</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
-                                <h1 class="font-weight-bold">{{$figers->total_product}}</h1>
+                                <h1 class="font-weight-bold">{{ $figers->total_product }}</h1>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                         <h5 class="text-muted mb-4">Total Customer</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
-                                <h1 class="font-weight-bold">{{$figers->total_customer}}</h1>
+                                <h1 class="font-weight-bold">{{ $figers->total_customer }}</h1>
                             </div>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                         <h5 class="text-muted mb-4">Order<span style='font-size:9px'>(Current month)</span></h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
-                                <h1 class="font-weight-bold">{{$figers->total_order}}</h1>
+                                <h1 class="font-weight-bold">{{ $figers->total_order }}</h1>
                             </div>
                         </div>
                     </div>
@@ -72,11 +72,11 @@
             <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 mb-4">
                 <div class="card shadow-sm h-100">
                     <div class="card-header">
-                        <h5 class="mb-0"> Product Sales</h5>
+                        <h5 class="mb-0"> Top salling product</h5>
                     </div>
                     <div class="card-body">
                         {{-- <div class="ct-chart-product ct-golden-section"></div> --}}
-                        <canvas id="myChart" width="400" height="400"></canvas>
+                        <canvas id="myChart" height="200"></canvas>
                     </div>
                 </div>
             </div>
@@ -93,25 +93,16 @@
             data: {
                 labels: [<?= '"' . implode('","', $product_name) . '"' ?>],
                 datasets: [{
-                    label: '# of Votes',
+                    label: 'Total Sale:',
                     data: [<?= '"' . implode('","', $total_sell) . '"' ?>],
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 206, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(153, 102, 255)',
+                        'rgb(255, 159, 64)'
                     ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
                 }]
             },
             options: {

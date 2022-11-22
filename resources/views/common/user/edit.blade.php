@@ -1,5 +1,6 @@
 @php
     $role_id = auth()->user()->role_id;
+    $users_active = true;
 @endphp
 @extends('layouts.app')
 

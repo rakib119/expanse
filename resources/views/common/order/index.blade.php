@@ -1,5 +1,6 @@
 @php
     $role_id = auth()->user()->role_id;
+    $orders_active = true;
 @endphp
 @extends('layouts.app')
 @section('css')
@@ -27,8 +28,11 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Customer Name</th>
-                                    <th scope="col">Created By</th>
+                                    @if (auth()->user()->role_id == 2)
+                                        <th scope="col">Created By</th>
+                                    @endif
                                     <th scope="col">Order Amount</th>
+                                    <th scope="col">Created At</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -37,8 +41,11 @@
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
                                         <td>{{ $order->customer_name }}</td>
-                                        <td> <a href="">{{ $order->created_by }}</a> </td>
+                                        @if (auth()->user()->role_id == 2)
+                                            <td> <a href="">{{ $order->created_by }}</a> </td>
+                                        @endif
                                         <td>{{ $order->order_amount }}</td>
+                                        <td>{{ $order->created_at->format('d M Y') }}</td>
 
                                         <td>
                                             <div class="dropdown show">

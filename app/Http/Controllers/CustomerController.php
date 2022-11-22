@@ -14,19 +14,28 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::join('users','users.id','=','customers.created_by')
-            ->where('customers.company_id', auth()->id())
-            ->orderBy('customers.id', 'desc')
-            ->select( 'users.name as created_by','customers.name','customers.email','customers.phone_number')
-            ->get();
+        $user_role = auth()->user()->role_id;
+        $customers = $this->customerList($user_role);
         return view('common.customer.index', compact('customers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private function customerList($user_role)
+    {
+        $auth_id =  auth()->id();
+        if ($user_role == 2) {
+            $condition = ['customers.company_id' => $auth_id];
+        }elseif ($user_role == 3 || $user_role == 4){
+            $condition = ['customers.created_by' => $auth_id];
+        } else{
+            abort(403);
+        }
+        return  Customer::join('users', 'users.id', '=', 'customers.created_by')
+            ->where($condition)
+            ->orderBy('customers.id', 'desc')
+            ->select('users.name as created_by', 'customers.name', 'customers.email', 'customers.phone_number', 'customers.created_at')
+            ->get();
+    }
+
     public function create()
     {
         //

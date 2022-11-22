@@ -14,20 +14,21 @@ class OrderController extends Controller
      */
     public function index()
     {
+        $auth =  auth()->user();
+        $column =  'orders.created_by';
+        if ($auth->role_id  == 2) {
+            $column =  'orders.company_id';
+        }
         $orders = Order::join('customers', 'orders.customer_id', '=', 'customers.id')
-            ->join('users','users.id','=','orders.created_by')
-            ->where('orders.company_id', auth()->id())
+            ->join('users', 'users.id', '=', 'orders.created_by')
+            ->where($column, auth()->id())
             ->orderBy('orders.id', 'desc')
-            ->select( 'users.name as created_by','customers.name as customer_name','orders.order_amount')
+            ->select('users.name as created_by', 'customers.name as customer_name', 'orders.order_amount', 'orders.created_at')
             ->get();
         return view('common.order.index', compact('orders'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         //
