@@ -27,11 +27,11 @@
                                 <select name="role" id="role" required
                                     class="form-control @error('name') is-invalid @enderror ">
                                     @if ($role_id == 1)
-                                        <option {{ old('role') == 2 ?? 'selected' }} value="2">Company</option>
+                                        <option {{ old('role') == 2 ? 'selected' :'' }} value="2">Company</option>
                                     @elseif ($role_id == 2)
-                                        <option {{ old('role') == 3 ?? 'selected' }} value="3">Manager</option>
+                                        <option {{ old('role') == 3 ? 'selected' :'' }} value="3">Manager</option>
                                     @elseif ($role_id == 3)
-                                        <option {{ old('role') == 4 ?? 'selected' }} value="4">Sales Executive</option>
+                                        <option {{ old('role') == 4 ? 'selected' :'' }} value="4">Sales Executive</option>
                                     @endif
                                 </select>
                                 @error('role')
@@ -70,7 +70,7 @@
 
                             <div class="col-sm-12 pl-0">
                                 <p class="text-right">
-                                    <button class="btn btn-space btn-secondary">Cancel</button>
+                                    <button type="reset" class="btn btn-space btn-secondary">Reset</button>
                                     <button type="submit" class="btn btn-space btn-primary">Submit</button>
                                 </p>
                             </div>

@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExpanseCategoryController;
 use App\Http\Controllers\ExpanseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -30,7 +31,17 @@ Route::resource('order', OrderController::class);
 // customers
 Route::resource('customer', CustomerController::class);
 // expense
-Route::resource('expanse', ExpanseController::class);
+//  Route::controller( ExpanseController::class)->prefix('expanse')->group(function(){
+//     Route::get('/','index')->name('expanse.index');
+//     Route::get('create','create')->name('expanse.create');
+//     Route::post('store','store')->name('expanse.store');
+//     Route::get('edit/{expanse_id}','edit')->name('expanse.edit');
+//     Route::put('update/{expanse_id}','')->name('expanse.update');
+//  });
+Route::resource('expanse', ExpanseController::class)->except('show');
+
+// expense category
+Route::resource('category-expanse', ExpanseCategoryController::class);
 
 
 

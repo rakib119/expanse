@@ -18,7 +18,7 @@
                             <h5> Expanse List</h5>
                         </div>
                         <div>
-                            <a href="{{ route('expanse.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add
+                            <a href="{{ route('expanse.create') }}" class="btn btn-secondary"> <i class="fa fa-plus"></i> Add
                                 Expanse</a>
                         </div>
 
@@ -53,7 +53,7 @@
                                                 </a>
 
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="#">Edit</a>
+                                                    <a class="dropdown-item" href="{{route('expanse.edit',Crypt::encrypt($expanse->id))}}">Edit</a>
                                                     {{-- <a class="dropdown-item" href="#">Another action</a>
                                                     <a class="dropdown-item" href="#">Something else here</a> --}}
                                                 </div>

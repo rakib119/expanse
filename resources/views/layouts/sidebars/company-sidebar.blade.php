@@ -21,7 +21,7 @@
     <div id="exppanses_sub_menu" class="collapse submenu">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="">Category</a>
+                <a class="nav-link" href="{{route('category-expanse.index')}}">Category</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('expanse.index')}}">Expanse</a>
