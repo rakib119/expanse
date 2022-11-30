@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class CartController extends Controller
 {
@@ -14,9 +15,11 @@ class CartController extends Controller
             ->join('products', 'products.id', 'carts.product_id')
             ->where(['carts.created_by' => auth()->id(), 'carts.customer_id' => $request->customer_id])
             ->select('carts.id', 'carts.quantity', 'carts.unit_price', 'carts.amount', 'products.name as product_name', 'customers.name as customer_name')
+            ->orderBy('carts.id','desc')
             ->get();
-            $cart_html = (string) view('shortcode.cart', compact('carts'));
-            return response()->json(['cartHtml' => $cart_html]);
+
+        $cart_html = (string) view('shortcode.cart', compact('carts'));
+        return response()->json(['cartHtml' => $cart_html]);
     }
     function store(Request $request)
     {
@@ -46,6 +49,15 @@ class CartController extends Controller
 
         return response()->json([
             'success' => 'successfull'
+        ]);
+    }
+
+    public function destroy(Request $request)
+    {
+        $id = Crypt::decrypt($request->id);
+        Cart::find($id)->delete();
+        return response()->json([
+            'success' => 'Deleted successfully'
         ]);
     }
 }

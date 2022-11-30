@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -45,9 +48,9 @@ class OrderController extends Controller
         } elseif ($role_id == 4) {
             $condition = ['sels_executive_id' => $user_id];
         }
-        $products = Product::where('company_id',$company_id)->get(['id','name','price']);
-        $customers = Customer::where($condition)->get(['id','name']);
-        return view('common.order.create', compact('customers','products'));
+        $products = Product::where('company_id', $company_id)->get(['id', 'name', 'price']);
+        $customers = Customer::where($condition)->get(['id', 'name']);
+        return view('common.order.create', compact('customers', 'products'));
     }
 
 
@@ -59,7 +62,50 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        
+        // return response()->json();
+        $user = auth()->user();
+        $user_id = $user->id;
+        $role_id =  $user->role_id;
+        $company_id = $user->company_id;
+        $manager_id = $user->manager_id;
+        $sels_executive_id = $user->sels_executive_id;
+
+        if ($role_id == 2) {
+            $company_id = $user_id;
+        } elseif ($role_id == 3) {
+            $manager_id = $user_id;
+        } elseif ($role_id == 4) {
+            $sels_executive_id = $user_id;
+        }
+
+        $customer_id = $request->customer_id;
+        $carts = Cart::where('customer_id', $customer_id)->get();
+        $order_amount = 0;
+        $order_id = Order::insertGetId([
+            'order_amount' => $order_amount,
+            'company_id' => $company_id,
+            'manager_id' => $manager_id,
+            'sels_executive_id' => $sels_executive_id,
+            'customer_id' => $customer_id,
+            'created_by' => $user->id,
+            'created_at' => Carbon::now()
+        ]);
+        foreach ($carts as  $cart) {
+            $order_amount += $cart->amount;
+            OrderDetail::insert([
+                'order_id' => $order_id,
+                'product_id' => $cart->product_id,
+                'unit_price' => $cart->unit_price,
+                'quantity' => $cart->quantity,
+                'amount' => $cart->amount,
+                'created_at' => $cart->created_at,
+            ]);
+            $cart->delete();
+        }
+        $order = Order::find($order_id)->increment('order_amount', $order_amount);
+        return response()->json([
+            'success' => 'successfull'
+        ]);
     }
 
     /**

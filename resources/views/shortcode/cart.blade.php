@@ -35,15 +35,14 @@
                 <input type="text" class="form-control" disabled value="{{ $cart->amount }}">
             </div>
             <div class="col-md-1 mb-2">
-                <a href="{{ route('cart.destroy', Crypt::encrypt($cart->id)) }}"class="btn btn-danger"><i
-                        class="fa fa-minus"></i></a>
+                <a onclick="deleteCart('{{ Crypt::encrypt($cart->id) }}')" href="javascript:void(0)"
+                    class="btn btn-danger"><i class="fa fa-minus"></i></a>
             </div>
         @endforeach
 
     </div>
-    <div class="row justify-content-end">
-        <div class="col-sm-2 mt-3">
-            <a href="{{ route('cart.store') }}" class="btn btn-primary">Submit</a>
-        </div>
+    <div class="text-right my-3">
+        <a style="margin-right: 13px" onclick="makeOrder()" href="javascript:void(0)"
+            class="btn btn-primary text-right">Submit</a>
     </div>
 @endif

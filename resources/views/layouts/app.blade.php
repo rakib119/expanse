@@ -104,6 +104,11 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @if (session('success'))
         <script>
+            succcessTost('{{ session('success') }}');
+        </script>
+    @endif
+    <script>
+        function succcessTost( message='success'){
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -117,10 +122,10 @@
             })
             Toast.fire({
                 icon: 'success',
-                title: '{{ session('success') }}'
+                title: message
             })
-        </script>
-    @endif
+        }
+    </script>
     @yield('javascript')
 </body>
 

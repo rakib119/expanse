@@ -29,7 +29,9 @@ Route::resource('user', UserController::class);
 Route::resource('product', ProductController::class);
 // products
 Route::resource('order', OrderController::class);
-Route::resource('cart', CartController::class);
+Route::get('cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('cart/destroy', [CartController::class, 'destroy'])->name('cart.destroy');
+Route::post('cart/store', [CartController::class, 'store'])->name('cart.store');
 // customers
 Route::resource('customer', CustomerController::class);
 // expense
@@ -44,6 +46,8 @@ Route::resource('expanse', ExpanseController::class)->except('show');
 
 // expense category
 Route::resource('category-expanse', ExpanseCategoryController::class);
+
+
 
 
 

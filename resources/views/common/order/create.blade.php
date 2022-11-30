@@ -71,8 +71,23 @@
             $(".select2").select2();
             setUnitPrice();
             setTotalAmount();
+            getCart();
         });
 
+        function deleteCart(id) {
+            ajaxSetup();
+            $.ajax({
+                type: "post",
+                url: '{{ route('cart.destroy') }}',
+                data: {
+                    id: id
+                },
+                success: function(results) {
+                    getCart();
+                },
+            });
+
+        }
 
         function ajaxSetup() {
             $.ajaxSetup({
@@ -127,13 +142,16 @@
                 },
                 success: function(results) {
                     getCart();
-                    // $('#cart').html(results);
+                    if (results.success) {
+                        succcessTost(results.success);
+                    }
+
                 },
             });
         })
 
         function getCart() {
-            let customer_id = $('#name').val(); 
+            let customer_id = $('#name').val();
             $.ajax({
                 type: "get",
                 url: '{{ route('cart.index') }}',
@@ -142,6 +160,24 @@
                 },
                 success: function(results) {
                     $('#cart').html(results.cartHtml);
+                },
+            });
+        }
+
+        function makeOrder() {
+            let customer_id = $('#name').val();
+            ajaxSetup();
+            $.ajax({
+                type: "post",
+                url: '{{ route('order.store') }}',
+                data: {
+                    customer_id: customer_id
+                },
+                success: function(results) {
+                    if (results.success) {
+                        succcessTost(results.success);
+                    }
+                    getCart();
                 },
             });
         }
