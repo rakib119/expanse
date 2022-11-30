@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -31,8 +33,23 @@ class OrderController extends Controller
 
     public function create()
     {
-        //
+        $user = auth()->user();
+        $user_id = $user->id;
+        $role_id =  $user->role_id;
+        $company_id = $user->company_id;
+        if ($role_id == 2) {
+            $condition = ['company_id' => $user_id];
+            $company_id = $user_id;
+        } elseif ($role_id == 3) {
+            $condition = ['manager_id' => $user_id];
+        } elseif ($role_id == 4) {
+            $condition = ['sels_executive_id' => $user_id];
+        }
+        $products = Product::where('company_id',$company_id)->get(['id','name','price']);
+        $customers = Customer::where($condition)->get(['id','name']);
+        return view('common.order.create', compact('customers','products'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -42,7 +59,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

@@ -19,6 +19,8 @@ class OrderDetailFactory extends Factory
         return [
             'order_id' => rand(1,30),
             'product_id' => rand(1,20),
+            'unit_price' => rand(500,5000),
+            'quantity' => rand(1,5),
             'amount' => rand(10000,50000),
             'created_at' => now(),
         ];

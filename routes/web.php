@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpanseCategoryController;
@@ -28,6 +29,7 @@ Route::resource('user', UserController::class);
 Route::resource('product', ProductController::class);
 // products
 Route::resource('order', OrderController::class);
+Route::resource('cart', CartController::class);
 // customers
 Route::resource('customer', CustomerController::class);
 // expense
