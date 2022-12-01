@@ -11,8 +11,6 @@
             <div class="card mb-5 shadow-sm">
                 <h5 class="card-header">Create New Order</h5>
                 <div class="card-body">
-                    <div id="cart">
-                    </div>
                     <div class="my-4">
                         <div class="row justify-content-betweeen">
                             <div class="col-md-3">
@@ -62,6 +60,8 @@
             </div>
         </div>
     </div>
+    <div class="row" id="cart">
+    </div>
 @endsection
 @section('javascript')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -108,7 +108,6 @@
         })
         $('#name').change(() => {
             getCart();
-
         })
 
         function setTotalAmount() {
@@ -125,8 +124,8 @@
         $('#addToCart').click(() => {
             // alert('hello');
             ajaxSetup();
-            let customer_id = $('#name').val();
-            let product_id = $('#product_name').val();
+            let customer = $('#name').val();
+            let product = $('#product_name').val();
             let qty = $('#quantity').val();
             let unit_price = $('#unit_price').val();
             let amount = $('#amount').val();
@@ -134,44 +133,84 @@
                 type: "post",
                 url: '{{ route('cart.store') }}',
                 data: {
-                    customer_id: customer_id,
-                    product_id: product_id,
+                    customer: customer,
+                    product: product,
                     qty: qty,
                     unit_price: unit_price,
                     amount: amount,
                 },
                 success: function(results) {
-                    getCart();
+                    let nameError = $('#nameError');
+                    let productError = $('#productError');
+                    let quantityError = $('#quantityError');
+                    let priceError = $('#priceError');
+                    let amountError = $('#amountError');
                     if (results.success) {
+                        nameError.html('');
+                        productError.html('');
+                        quantityError.html('');
+                        priceError.html('');
+                        amountError.html('');
+                        getCart();
                         succcessTost(results.success);
                     }
-
+                    if (results.customer) {
+                        nameError.html(results.customer[0]);
+                    }
+                    if (results.product) {
+                        productError.html(results.product[0]);
+                    }
+                    if (results.qty) {
+                        quantityError.html(results.qty[0]);
+                    }
+                    if (results.unit_price) {
+                        priceError.html(results.unit_price[0]);
+                    }
+                    if (results.amount) {
+                        amountError.html(results.amount[0]);
+                    }
                 },
             });
         })
 
         function getCart() {
+            let paidAmount = $('#paidAmount').val();
             let customer_id = $('#name').val();
             $.ajax({
                 type: "get",
                 url: '{{ route('cart.index') }}',
                 data: {
-                    customer_id: customer_id
+                    customer_id: customer_id,
+                    paidAmount: paidAmount
                 },
                 success: function(results) {
                     $('#cart').html(results.cartHtml);
-                },
+                    dueCalculation();
+                }
             });
+        }
+
+        function dueCalculation() {
+            let paidAmount = $('#paidAmount').val();
+            let payableAmount = $('#payableAmount').val();
+            let dueAmount = payableAmount - paidAmount;
+            $('#dueAmount').val(dueAmount);
         }
 
         function makeOrder() {
             let customer_id = $('#name').val();
+            let paid_amount = $('#paidAmount').val();
+            let payment_method = $('#paymentMethod').val();
+            let account_number = $('#accountNumber').val();
             ajaxSetup();
             $.ajax({
                 type: "post",
                 url: '{{ route('order.store') }}',
                 data: {
-                    customer_id: customer_id
+                    customer_id: customer_id,
+                    paid_amount: paid_amount,
+                    payment_method: payment_method,
+                    account_number: account_number,
                 },
                 success: function(results) {
                     if (results.success) {

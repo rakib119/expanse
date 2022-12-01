@@ -69,7 +69,7 @@ class OrderController extends Controller
         $company_id = $user->company_id;
         $manager_id = $user->manager_id;
         $sels_executive_id = $user->sels_executive_id;
-
+        $paid_amount =  $request->paid_amount;
         if ($role_id == 2) {
             $company_id = $user_id;
         } elseif ($role_id == 3) {
@@ -79,10 +79,15 @@ class OrderController extends Controller
         }
 
         $customer_id = $request->customer_id;
+        $payment_method = $request->payment_method;
+        $account_number = $request->account_number;
         $carts = Cart::where('customer_id', $customer_id)->get();
         $order_amount = 0;
         $order_id = Order::insertGetId([
             'order_amount' => $order_amount,
+            'paid_amount' => $paid_amount,
+            'payment_method' => $payment_method,
+            'account_number' => $account_number,
             'company_id' => $company_id,
             'manager_id' => $manager_id,
             'sels_executive_id' => $sels_executive_id,
@@ -102,7 +107,10 @@ class OrderController extends Controller
             ]);
             $cart->delete();
         }
-        $order = Order::find($order_id)->increment('order_amount', $order_amount);
+        $order = Order::find($order_id);
+        $order->order_amount =  $order_amount;
+        $order->timestamps = false;
+        $order->save();
         return response()->json([
             'success' => 'successfull'
         ]);
