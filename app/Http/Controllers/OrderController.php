@@ -10,14 +10,10 @@ use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Crypt;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $auth =  auth()->user();
@@ -53,14 +49,22 @@ class OrderController extends Controller
         $customers = Customer::where($condition)->get(['id', 'name']);
         return view('common.order.create', compact('customers', 'products'));
     }
+    public function update(OrderDetail $order, Request $request)
+    {
+        $diffrence = $request->amount - $order->amount;
+        $order->unit_price = $request->unit_price;
+        $order->quantity = $request->quantity;
+        $order->amount = $request->amount;
+        $order->save();
+        
+        $orders = Order::find($order->id);
+        $orders->order_amount += $diffrence;
+        $order->updated_by = auth()->id();
+        return response()->json([
+            'success' => 'successfull'
+        ]);
+    }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // return response()->json();
@@ -116,55 +120,41 @@ class OrderController extends Controller
             'success' => 'successfull'
         ]);
     }
-    function downloadInvoice($order_id)
+    public function edit($order_id)
     {
-        $pdf = Pdf::loadView('invoice.pdf');
+        $order_id = Crypt::decrypt($order_id);
+        $order_details  = OrderDetail::join('products', 'products.id', 'order_details.product_id')
+            ->where('order_id', $order_id)
+            ->select('products.name as product_name', 'order_details.id', 'order_details.quantity', 'order_details.unit_price', 'order_details.amount')
+            ->get();
+        return view('common.order.edit', compact('order_details'));
+    }
+
+
+    function invoice($order_id)
+    {
+        $order_id = Crypt::decrypt($order_id);
+        $info = Order::join('customers', 'customers.id', 'orders.customer_id')
+            ->join('users', 'users.id', 'orders.created_by')
+            ->join('roles', 'roles.id', 'users.role_id')
+            ->select('orders.id', 'orders.order_amount', 'orders.paid_amount', 'orders.created_at', 'orders.updated_at', 'customers.name as customer_name', 'customers.company_name', 'customers.phone_number', 'customers.created_by', 'customers.address', 'users.name as created_by', 'roles.role_name as designnation')
+            ->first();
+        $order_details  = OrderDetail::join('products', 'products.id', 'order_details.product_id')
+            ->where('order_id', $order_id)
+            ->select('products.name as product_name', 'order_details.quantity', 'order_details.unit_price', 'order_details.amount')
+            ->get();
+        return  Pdf::loadView('invoice.pdf', compact('info', 'order_details'));
+    }
+    function printInvoice($order_id)
+    {
+        $pdf = $this->invoice($order_id);
         $name = date('Y_m_d_h-i-s_A') . '.pdf';
         return $pdf->setPaper('a4')->stream($name);
-        //  $pdf->download($name);
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Order $order)
+    function downloadInvoice($order_id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Order $order)
-    {
-        //
+        $pdf = $this->invoice($order_id);
+        $name = date('Y_m_d_h-i-s_A') . '.pdf';
+        return $pdf->setPaper('a4')->download($name);
     }
 }

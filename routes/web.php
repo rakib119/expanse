@@ -28,8 +28,10 @@ Route::resource('user', UserController::class);
 // products
 Route::resource('product', ProductController::class);
 // products
-Route::resource('order', OrderController::class);
+Route::resource('order', OrderController::class)->except(['destroy','show','update']);
+Route::post('order/update/{order?}',[OrderController::class, 'update'])->name('order.update');
 Route::get('download/order/invoice/{order}', [OrderController::class, 'downloadInvoice'])->name('order.download');
+Route::get('print/order/invoice/{order}', [OrderController::class, 'printInvoice'])->name('order.print');
 // cart
 Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('cart/destroy', [CartController::class, 'destroy'])->name('cart.destroy');

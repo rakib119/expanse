@@ -1,3 +1,16 @@
+@php
+    function numberFormater($number,$digit=5){
+        $length = strlen($number);
+        if ($length < $digit) {
+            $prefix ="";
+            for ($i = 0; $i <($digit - $length); $i++) {
+               $prefix .="0";
+            }
+            return $prefix.$number;
+        }
+        return $number;
+    }
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,13 +78,13 @@
         }
         .qr{
             position: absolute;
-            /* bottom: -40px; */
-            /* right: 10px; */
-            top:-15px;
+            top:0;
             right: 0;
-            background: red;
             height: 100px;
             width: 100px;
+        }
+        .text-capitalize{
+            text-transform: capitalize;
         }
     </style>
 </head>
@@ -89,7 +102,7 @@
                     <div class="address">
                         <p><b>Corporate Office:</b><br>House #61,Road #17,Block #C,Banani Dhaka-1212<br><b>Online
                                 Communication Office:</b> <br>House #40,Road #4,Block #D,Mohmmadpur Dhaka-1207<br>Cell:
-                            01303-523442 01737927247</p>
+                            01303-523442 , 01737927247</p>
                     </div>
                 </td>
             </tr>
@@ -103,11 +116,12 @@
                     <table class="border-1">
                         <tr align="left">
                             <td class="border-1 pd-5">Submited:</td>
-                            <td class="border-1 pd-5">{{ now()->format('d-M-Y') }}</td>
+
+                            <td class="border-1 pd-5">{{ $info->updated_at ?$info->updated_at->format('d-M-Y') :  $info->created_at->format('d-M-Y') }}</td>
                         </tr>
                         <tr>
                             <td class="border-1 pd-5">Invoice Number:</td>
-                            <td class="border-1 pd-5">{{ '32543656' }}</td>
+                            <td class="border-1 pd-5">{{numberFormater($info->id) }}</td>
                         </tr>
                     </table>
                 </td>
@@ -116,13 +130,13 @@
         <table>
             <tr>
                 <td width="240">
-                    <p><b>Invoice For</b><br>Company Name <br>Address</p>
+                    <p><b>Invoice For</b><br> {{$info->company_name}} <br>{{$info->address}}</p>
                 </td>
                 <td width="200">
-                    <p><b>Contact</b><br>Customer Name <br>mobile</p>
+                    <p><b>Contact</b><br>{{$info->customer_name}} <br>{{$info->phone_number}} </p>
                 </td>
                 <td>
-                    <p style="font-weight: 400;background: red; padding:5px 35px; color:#fff; ">PAID</p>
+                    <p style="font-weight: 400;background: red; padding:5px 35px; color:#fff; "> {{($info->order_amount - $info->paid_amount)< 1 ? 'PAID' : 'DUE'}}</p>
                 </td>
             </tr>
         </table>
@@ -133,45 +147,36 @@
                 <th class="border-1 pd-2" width="80">Unit Price</th>
                 <th class="border-1 pd-2" width="80">Total Price</th>
             </tr>
+            @foreach ($order_details as $order_detail)
             <tr>
-                <td class="border-1 pd-2">Lorem ipsum dolor sit amet consectetur</td>
-                <td class="border-1 pd-2">USD 3.765</td>
-                <td class="border-1 pd-2">BDT 40.00</td>
-                <td class="border-1 pd-2">BDT 125475</td>
+                <td class="border-1 pd-2">{{$order_detail->product_name}}</td>
+                <td class="border-1 pd-2">USD {{$order_detail->quantity}}</td>
+                <td class="border-1 pd-2">BDT {{$order_detail->unit_price}}</td>
+                <td class="border-1 pd-2">BDT {{$order_detail->amount}}</td>
             </tr>
-            <tr>
-                <td class="border-1 pd-2">Lorem ipsum dolor sit amet consectetur</td>
-                <td class="border-1 pd-2">USD 3.765</td>
-                <td class="border-1 pd-2">BDT 40.00</td>
-                <td class="border-1 pd-2">BDT 125475</td>
-            </tr>
-            <tr>
-                <td class="border-1 pd-2">Lorem ipsum dolor sit amet consectetur</td>
-                <td class="border-1 pd-2">USD 3.765</td>
-                <td class="border-1 pd-2">BDT 40.00</td>
-                <td class="border-1 pd-2">BDT 125475</td>
-            </tr>
+            @endforeach
+
             {{-- calculation --}}
             <tr>
                 <td colspan="2" style="border: 1px solid #ffff; border-right: 1px solid black;"> </td>
                 <td class="border-1 pd-2">Total</td>
-                <td class="border-1 pd-2">BDT 125475</td>
+                <td class="border-1 pd-2">BDT {{$info->order_amount}}</td>
             </tr>
             <tr>
                 <td colspan="2" style="border: 1px solid #ffff; border-right: 1px solid black;"> </td>
                 <td class="border-1 pd-2">Paid</td>
-                <td class="border-1 pd-2">BDT 125475</td>
+                <td class="border-1 pd-2">BDT {{$info->paid_amount}}</td>
             </tr>
             <tr>
                 <td colspan="2" style="border: 1px solid #ffff; border-right: 1px solid black;"> </td>
                 <td class="border-1 pd-2">Due</td>
-                <td class="border-1 pd-2">BDT 125475</td>
+                <td class="border-1 pd-2">BDT {{$info->order_amount - $info->paid_amount}}</td>
             </tr>
         </table>
         <table class="border-1" style="margin-top:30px">
             <tr>
                 <th class="border-1 pd-3">In Word:</th>
-                <th class="border-1 pd-3">Four thousend three humdred And seventy taka only</th>
+                <th class="border-1 pd-3 text-capitalize">{{Terbilang::make($info->paid_amount).' taka only'}}</th>
             </tr>
         </table>
         <div style="border: 1px solid black; width:270px;margin-top:40px;">
@@ -187,8 +192,8 @@
                     <td width="235">
                         <p>
                             <b>Prepared By</b><br>
-                            Name<br>
-                            position
+                            {{$info->created_by}}<br>
+                            {{$info->designnation}}
                         </p>
                     </td>
                     <td>
@@ -201,7 +206,7 @@
                 </tr>
             </table>
             <div class="qr">
-                <img src="data:image/png;base64, {{ base64_encode(QrCode::size(100)->generate('https://nugortech.com/order-number'.'767846578')) }} ">
+                <img src="data:image/png;base64, {{ base64_encode(QrCode::size(100)->generate('https://nugortech.com/')) }} ">
             </div>
             <div style="width: 430px; height:15px ;background-color:#0BFEFE"></div>
             <div style="width: 570px; height:15px ;background-color:#3F76D5"></div>
