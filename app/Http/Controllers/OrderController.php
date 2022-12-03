@@ -9,6 +9,7 @@ use App\Models\OrderDetail;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -28,7 +29,7 @@ class OrderController extends Controller
             ->join('users', 'users.id', '=', 'orders.created_by')
             ->where($column, auth()->id())
             ->orderBy('orders.id', 'desc')
-            ->select('users.name as created_by', 'customers.name as customer_name', 'orders.order_amount', 'orders.created_at')
+            ->select('users.name as created_by', 'customers.name as customer_name', 'orders.order_amount', 'orders.id', 'orders.created_at')
             ->get();
         return view('common.order.index', compact('orders'));
     }
@@ -115,7 +116,13 @@ class OrderController extends Controller
             'success' => 'successfull'
         ]);
     }
-
+    function downloadInvoice($order_id)
+    {
+        $pdf = Pdf::loadView('invoice.pdf');
+        $name = date('Y_m_d_h-i-s_A') . '.pdf';
+        return $pdf->setPaper('a4')->stream($name);
+        //  $pdf->download($name);
+    }
     /**
      * Display the specified resource.
      *

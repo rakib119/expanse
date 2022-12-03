@@ -22,6 +22,8 @@ class CustomerFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'phone_number' => fake()->unique()->phoneNumber(),
             'company_id' => 2,
+            'address' => fake()->address(),
+            'company_name' => fake()->company(),
             'manager_id' => null,
             'sels_executive_id' => 3,
             'created_by' => 3,

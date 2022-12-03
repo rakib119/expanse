@@ -1,6 +1,6 @@
 <div class="dashboard-header">
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
-        <a class="navbar-brand" href="/"><img src="{{ asset('assets/images/logo.png') }}"
+        <a class="navbar-brand" href="/"><img width="155" height="30" src="{{ asset('assets/images/logo.png') }}"
                 alt=""></a>
         <div class="ml-auto" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto navbar-right-top flex-row ">

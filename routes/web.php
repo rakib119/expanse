@@ -29,6 +29,8 @@ Route::resource('user', UserController::class);
 Route::resource('product', ProductController::class);
 // products
 Route::resource('order', OrderController::class);
+Route::get('download/order/invoice/{order}', [OrderController::class, 'downloadInvoice'])->name('order.download');
+// cart
 Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('cart/destroy', [CartController::class, 'destroy'])->name('cart.destroy');
 Route::post('cart/store', [CartController::class, 'store'])->name('cart.store');

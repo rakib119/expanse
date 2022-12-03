@@ -54,11 +54,9 @@
                                                     aria-expanded="false">
                                                     Action
                                                 </a>
-
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                     <a class="dropdown-item" href="#">Edit</a>
-                                                    {{-- <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else here</a> --}}
+                                                    <a class="dropdown-item" href="{{route('order.download',$order->id)}}">Download Invoice</a>
                                                 </div>
                                             </div>
                                         </td>

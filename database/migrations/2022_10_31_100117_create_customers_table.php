@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone_number')->unique()->nullable();
+            $table->string('address')->nullable();
+            $table->string('company_name')->nullable();
             $table->bigInteger('company_id')->unsigned();
             $table->bigInteger('manager_id')->unsigned()->nullable();
             $table->bigInteger('sels_executive_id')->unsigned()->nullable();
