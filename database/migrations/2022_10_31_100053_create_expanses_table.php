@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('cat_id')->unsigned();
             $table->text('remarks');
-            $table->float('amount');
+            $table->string('amount');
             $table->bigInteger('company_id')->unsigned();
             $table->bigInteger('created_by')->nullable()->unsigned();
             $table->bigInteger('updated_by')->nullable()->unsigned();
