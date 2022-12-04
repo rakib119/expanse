@@ -29,7 +29,8 @@ Route::resource('user', UserController::class);
 Route::resource('product', ProductController::class);
 // products
 Route::resource('order', OrderController::class)->except(['destroy','show','update']);
-Route::post('order/update/{order?}',[OrderController::class, 'update'])->name('order.update');
+Route::post('order/details/update/{order?}',[OrderController::class, 'update'])->name('order.update');
+Route::post('order/update/{order?}',[OrderController::class, 'updateOrder'])->name('order-update');
 Route::get('download/order/invoice/{order}', [OrderController::class, 'downloadInvoice'])->name('order.download');
 Route::get('print/order/invoice/{order}', [OrderController::class, 'printInvoice'])->name('order.print');
 // cart

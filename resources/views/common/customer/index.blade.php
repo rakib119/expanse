@@ -14,13 +14,11 @@
                 <div class="card shadow-sm mb-5">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
-                            <h5> Customer List</h5>
+                        <h5> Customer List</h5>
                         </div>
                         <div>
-                            <a href="{{ route('customer.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Create
-                                Order</a>
-                        </div>
-
+                            <a href="{{ route('customer.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add Customer</a>
+                        </div> 
                     </div>
                     <div class="card-body">
                         <table class="table" id='myTable'>

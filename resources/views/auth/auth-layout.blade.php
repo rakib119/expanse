@@ -10,7 +10,6 @@
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/theme.min.css') }}">
     <title> @yield('page-title')</title>
-
 </head>
 
 <body class="bg-light">
@@ -18,7 +17,7 @@
         <div class="splash-container">
             <div class="card shadow-sm">
                 <div class="card-header text-center">
-                    <a href="/"><img class="logo-img" src="{{ asset('assets/images/logo.png') }}"
+                    <a href="/"><img style="height: 50px;" class="logo-img" src="{{ asset('assets/images/logo.png') }}"
                             alt="logo"></a><span class="splash-description">@yield('form-title')</span>
                 </div>
                 @yield('auth-content')

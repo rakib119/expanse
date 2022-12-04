@@ -55,7 +55,7 @@
                                                     Action
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="{{route('order.edit',Crypt::encrypt($order->id) )}}">Order Details</a>
+                                                    <a class="dropdown-item" href="{{route('order.edit',Crypt::encrypt($order->id) )}}">Edit Details</a>
                                                     <a class="dropdown-item" href="{{route('order.download',Crypt::encrypt($order->id) )}}">Download Invoice</a>
                                                     <a class="dropdown-item" href="{{route('order.print',Crypt::encrypt($order->id) )}}">Print Invoice</a>
                                                 </div>
@@ -63,14 +63,11 @@
                                         </td>
                                     </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 @endsection

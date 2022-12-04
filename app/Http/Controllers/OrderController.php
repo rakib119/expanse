@@ -56,12 +56,24 @@ class OrderController extends Controller
         $order->quantity = $request->quantity;
         $order->amount = $request->amount;
         $order->save();
-        
-        $orders = Order::find($order->id);
+
+        $orders = Order::find($order->order_id);
         $orders->order_amount += $diffrence;
-        $order->updated_by = auth()->id();
+        $orders->updated_by = auth()->id();
+        $orders->save();
         return response()->json([
-            'success' => 'successfull'
+            'success' =>  'Update successfully'
+        ]);
+    }
+    public function updateOrder(Order $order, Request $request)
+    {
+        $order->payment_method = $request->payment_method;
+        $order->account_number = $request->account_number;
+        $order->order_amount = $request->order_amount;
+        $order->paid_amount = $request->paid_amount;
+        $order->save();
+        return response()->json([
+            'success' =>  'Update successfully'
         ]);
     }
 
@@ -123,11 +135,12 @@ class OrderController extends Controller
     public function edit($order_id)
     {
         $order_id = Crypt::decrypt($order_id);
-        $order_details  = OrderDetail::join('products', 'products.id', 'order_details.product_id')
+        $order_details = OrderDetail::join('products', 'products.id', 'order_details.product_id')
             ->where('order_id', $order_id)
             ->select('products.name as product_name', 'order_details.id', 'order_details.quantity', 'order_details.unit_price', 'order_details.amount')
             ->get();
-        return view('common.order.edit', compact('order_details'));
+        $order = Order::where('id', $order_id)->first(['id', 'payment_method', 'account_number', 'order_amount', 'paid_amount']);
+        return view('common.order.edit', compact('order_details', 'order'));
     }
 
 
