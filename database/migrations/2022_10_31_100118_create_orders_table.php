@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->float('order_amount')->nullable();
-            $table->float('paid_amount')->nullable();
+            $table->string('order_amount')->nullable();
+            $table->string('paid_amount')->nullable();
             $table->string('payment_method')->nullable();
             $table->string('account_number')->nullable();
             $table->bigInteger('company_id')->unsigned();

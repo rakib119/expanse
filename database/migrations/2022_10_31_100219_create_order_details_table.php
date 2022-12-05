@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->integer('unit_price');
             $table->integer('quantity');
-            $table->float('amount');
+            $table->string('amount');
             $table->timestamps();
 
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');

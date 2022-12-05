@@ -165,7 +165,7 @@
                     quantity: quantity,
                     amount: amount
                 },
-                success: function(results) { 
+                success: function(results) {
                     if (results.success) {
                         succcessTost(results.success);
                     }
@@ -174,11 +174,12 @@
         }
 
         function setTotalAmount(id) {
-            totalPayable();
+
             let unitprice = $('#unit_price' + id).val();
             let qty = $('#quantity' + id).val();
             let total = unitprice * qty;
             $('#amount' + id).val(total);
+            totalPayable();
         }
     </script>
 @endsection
