@@ -14,10 +14,11 @@
                 <div class="card shadow-sm mb-5">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
-                        <h5> Customer List</h5>
+                            <h5> Customer List</h5>
                         </div>
                         <div>
-                            <a href="{{ route('customer.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add Customer</a>
+                            <a href="{{ route('customer.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add
+                                Customer</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -47,7 +48,9 @@
                                         @endif
                                         <td>{{ $customer->created_at->format('d M Y') }}</td>
                                         <td>
-                                            <div class="dropdown show">
+                                            <a class="btn btn-primary"
+                                                href="{{ route('customer.edit', Crypt::encrypt($customer->id)) }}">Edit</a>
+                                            {{-- <div class="dropdown show">
                                                 <a class="btn btn-primary dropdown-toggle" href="#" role="button"
                                                     id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
                                                     aria-expanded="false">
@@ -55,14 +58,15 @@
                                                 </a>
 
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="#">Edit</a>
-                                                    {{-- <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else here</a> --}}
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('customer.edit', Crypt::encrypt($customer->id)) }}">Edit</a>
+                                                     <a class="dropdown-item" href="#">Another action</a>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </td>
                                     </tr>
-                                @endforeach 
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

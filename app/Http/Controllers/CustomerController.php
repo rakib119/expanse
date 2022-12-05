@@ -5,14 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $user_role = auth()->user()->role_id;
@@ -33,7 +29,7 @@ class CustomerController extends Controller
         return  Customer::join('users', 'users.id', '=', 'customers.created_by')
             ->where($condition)
             ->orderBy('customers.id', 'desc')
-            ->select('users.name as created_by', 'customers.name', 'customers.email', 'customers.phone_number', 'customers.created_at')
+            ->select('users.name as created_by', 'customers.name', 'customers.id', 'customers.email', 'customers.phone_number', 'customers.created_at')
             ->get();
     }
 
@@ -66,7 +62,7 @@ class CustomerController extends Controller
         } elseif ($role_id == 4) {
             $sels_executive_id = $user_id;
         }
-    Customer::insertGetId([
+        Customer::insertGetId([
             'company_name' => $request->company_name,
             'name' => $request->name,
             'email' => $request->email,
@@ -81,48 +77,31 @@ class CustomerController extends Controller
         return back()->with('success', 'Customer created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Customer $customer)
+    public function edit($id)
     {
-        //
+        $id = Crypt::decrypt($id);
+        $customer  = Customer::find($id);
+        return view('common.customer.edit', compact('customer'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Customer $customer)
     {
-        //
-    }
+        $request->validate([
+            'company_name' => 'max:255',
+            'name' => 'max:255',
+            'email' => 'max:255',
+            'phone_number' => 'max:255',
+            'address' => 'max:500',
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Customer $customer)
-    {
-        //
+        $customer->company_name =  $request->company_name;
+        $customer->name =  $request->name;
+        $customer->email =  $request->email;
+        $customer->phone_number =  $request->phone_number;
+        $customer->address =  $request->address;
+        $customer->updated_by =  auth()->id();
+        $customer->save();
+
+        return redirect()->route('customer.index')->with('success','customer updated successfully');
     }
 }
