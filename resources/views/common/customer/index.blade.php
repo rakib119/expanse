@@ -18,7 +18,7 @@
                         </div>
                         <div>
                             <a href="{{ route('customer.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add Customer</a>
-                        </div> 
+                        </div>
                     </div>
                     <div class="card-body">
                         <table class="table" id='myTable'>
@@ -62,8 +62,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
-
+                                @endforeach 
                             </tbody>
                         </table>
                     </div>
