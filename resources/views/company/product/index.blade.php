@@ -42,19 +42,8 @@
                                         <td>{{ $product->p_cat_name }}</td>
 
                                         <td>
-                                            <div class="dropdown show">
-                                                <a class="btn btn-primary dropdown-toggle" href="#" role="button"
-                                                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                    Action
-                                                </a>
-
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="#">Edit</a>
-                                                    {{-- <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else here</a> --}}
-                                                </div>
-                                            </div>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('product.edit', Crypt::encrypt($product->id)) }}">Edit</a>
                                         </td>
                                     </tr>
                                 @endforeach

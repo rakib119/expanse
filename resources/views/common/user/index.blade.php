@@ -56,7 +56,7 @@
                                                 </a>
 
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="#">Edit</a>
+                                                    <a class="dropdown-item" href="{{route('user.edit',Crypt::encrypt($user->id))}}">Edit</a>
                                                     {{-- <a class="dropdown-item" href="#">Another action</a>
                                                     <a class="dropdown-item" href="#">Something else here</a> --}}
                                                 </div>

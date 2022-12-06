@@ -8,16 +8,16 @@
             <div class="card mb-5 shadow-sm">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div>
-                        <h5> Add New Expanse</h5>
+                        <h5> Add New Expanse Category</h5>
                     </div>
                     <div>
-                        <a href="{{ route('expanse.index') }}" class="btn btn-secondary"> Expanse List <i
+                        <a href="{{ route('category-expanse.index') }}" class="btn btn-secondary"> Expanse Category List <i
                                 class="fa fa-arrow-right"></i></a>
                     </div>
 
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('expanse.store') }}" method='post'>
+                    <form action="{{ route('category-expanse.store') }}" method='post'>
                         @csrf
                         <div class="row align-items-end">
 
@@ -30,8 +30,7 @@
                                     <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </div>
-
-                            <div class="col-lg-6 col-sm-12 mb-3">
+                            <div class="col-lg-12 col-sm-12 mb-3">
                                 <p class="text-left">
                                     <button type="reset" class="btn btn-space btn-secondary">Reset</button>
                                     <button type="submit" class="btn btn-space btn-primary">Submit</button>

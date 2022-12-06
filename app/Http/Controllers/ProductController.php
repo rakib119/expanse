@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class ProductController extends Controller
 {
@@ -51,15 +52,32 @@ class ProductController extends Controller
     }
 
 
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
+        $categories = ProductCategory::where('company_id', auth()->id())->select('p_cat_name', 'id')->get();
+        $id = Crypt::decrypt($id);
+        $product = Product::find($id);
+        return view('company.product.edit', compact('product', 'categories'));
     }
 
 
     public function update(Request $request, Product $product)
     {
-        //
+        if (auth()->id() == $product->company_id) {
+            $request->validate([
+                'name' => 'required|max:255',
+                'category' => 'required',
+                'price' => 'required',
+            ]);
+            $product->name = $request->name;
+            $product->cat_id = $request->category;
+            $product->price = $request->price;
+            $product->updated_by = auth()->id();
+            $product->save();
+            return redirect()->route('product.index')->with('success', 'Product updated successfully');
+        } else {
+            abort(403);
+        }
     }
 
 

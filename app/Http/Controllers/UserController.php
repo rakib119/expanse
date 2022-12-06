@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -33,6 +34,17 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $user = auth()->user();
+        $user_id = $user->id;
+        $role_id =  $user->role_id;
+        $company_id = $user->company_id;
+        $manager_id = $user->manager_id;
+        if ($role_id == 2) {
+            $company_id = $user_id;
+        } elseif ($role_id == 3) {
+            $manager_id = $user_id;
+        }
+
         $request->validate([
             'name' => 'required|max:20',
             'email' => 'required|max:30',
@@ -59,37 +71,53 @@ class UserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone_number' => $request->mobile,
+                'company_id' =>  $company_id,
+                'manager_id' =>  $manager_id,
                 'role_id' => $request->role,
                 'password' => Hash::make($request->password),
                 'created_at' => now(),
             ]);
-            return back()->with('success', 'submited successfully');
+            return redirect()->route('user.index')->with('success', 'submited successfully');
         }
     }
 
 
     public function show(User $user)
     {
-        //
     }
 
 
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        $id = Crypt::decrypt($id);
+        $user = User::find($id);
+        return view('common.user.edit', compact('user'));
     }
 
 
     public function update(Request $request, User $user)
     {
-        //
+        if (auth()->id()  == $user->company_id || auth()->user()->company_id  == $user->company_id) {
+            $request->validate([
+                'name' => 'required|max:20',
+                'email' => 'required|max:30',
+                'mobile' => 'nullable|max:30',
+                'role' => 'required',
+            ]);
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phone_number = $request->mobile;
+            $user->role_id = $request->role;
+            $user->updated_by = auth()->id();
+            $user->save();
+            return redirect()->route('user.index')->with('success', 'User updated successfully');
+        } else {
+            abort(403);
+        }
     }
 
-    
-    public function destroy(User $user)
-    {
-        //
-    }
+
+
 
     // method for users
     private function usersForAdmin($auth)
@@ -111,5 +139,4 @@ class UserController extends Controller
             ->where(['role_id' => 4, 'manager_id' => $auth->id])
             ->orderBy('id', 'desc')->get();
     }
-
 }

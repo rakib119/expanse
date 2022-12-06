@@ -20,6 +20,7 @@ class ExpanseController extends Controller
         $expanses = Expanse::join('expanse_categories', 'expanse_categories.id', '=', 'expanses.cat_id')
             ->where('expanses.company_id', auth()->id())
             ->select('expanses.remarks', 'expanses.id', 'expanses.amount', 'expanse_categories.e_cat_name as category')
+            ->orderBy('expanses.id', 'desc')
             ->get();
         return view('company.expanse.index', compact('expanses'));
     }
@@ -47,16 +48,9 @@ class ExpanseController extends Controller
             'created_by' => auth()->id(),
             'created_at' => Carbon::now(),
         ]);
-        return back()->with('success', 'Exapanse added successfully');
+        return redirect()->route('expanse.index')->with('success', 'Exapanse added successfully');
     }
-
-
-    public function show(Expanse $expanse)
-    {
-        //
-    }
-
-
+ 
     public function edit($id)
     {
         $id = Crypt::decrypt($id);
@@ -81,8 +75,5 @@ class ExpanseController extends Controller
         return redirect()->route('expanse.index')->with('success', 'Exapanse updated successfully');
     }
 
-    public function destroy(Expanse $expanse)
-    {
-        //
-    }
+
 }

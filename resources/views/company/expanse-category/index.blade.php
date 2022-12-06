@@ -16,7 +16,8 @@
                             <h5> Expanse Category List</h5>
                         </div>
                         <div>
-                            <a href="{{ route('category-expanse.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add Category</a>
+                            <a href="{{ route('category-expanse.create') }}" class="btn btn-primary"> <i
+                                    class="fa fa-plus"></i> Add Category</a>
                         </div>
 
                     </div>
@@ -36,7 +37,8 @@
                                         <td>{{ $category->e_cat_name }}</td>
 
                                         <td>
-                                            <a class="btn btn-primary" href="{{route('category-expanse.edit',$category->id )}}">Edit</a>
+                                            <a class="btn btn-primary"
+                                                href="{{ route('category-expanse.edit', Crypt::encrypt($category->id)) }}">Edit</a>
                                         </td>
                                     </tr>
                                 @endforeach
