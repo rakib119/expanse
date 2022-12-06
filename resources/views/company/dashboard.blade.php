@@ -72,14 +72,47 @@
             <!-- ============================================================== -->
             <!-- product sales  -->
             <!-- ============================================================== -->
-            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 mb-4">
+            <div class="col-md-4 col-sm-12 col-12 mb-4">
                 <div class="card shadow-sm h-100">
                     <div class="card-header">
-                        <h5 class="mb-0"> Top salling product</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-0"> Top salling product</h5>
+                            </div>
+                            <div>
+                                <select name="" id="" class="custom-form">
+                                    <option value="">This Year</option>
+                                    <option value="">This Month</option>
+                                    <option value="">This week</option>
+                                </select>
+                            </div>
+
+                        </div>
                     </div>
                     <div class="card-body">
-                        {{-- <div class="ct-chart-product ct-golden-section"></div> --}}
                         <canvas id="myChart" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-12 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-0"> Top salling product</h5>
+                            </div>
+                            <div>
+                                <select name="" id="" class="custom-form">
+                                    <option value="">This Year</option>
+                                    <option value="">This Month</option>
+                                    <option value="">This week</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="Chart" height="200"></canvas>
                     </div>
                 </div>
             </div>
@@ -87,34 +120,12 @@
     </div>
 @endsection
 @section('javascript')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{asset('assets/js/chart.js')}}"></script>
     <script>
-        const ctx = document.getElementById('myChart');
-        const myChart = new Chart(ctx, {
+        let labelsForTopSales = [<?= '"' . implode('","', $product_name) . '"' ?>];
+        let datasForTopSales = [<?= '"' . implode('","', $total_sell) . '"' ?>];
+        showChart('#myChart', 'bar', 'Total Sale:', labelsForTopSales, datasForTopSales);
+        showChart('#Chart', 'bar', 'Total Sale:', labelsForTopSales, datasForTopSales);
 
-            type: 'bar',
-            data: {
-                labels: [<?= '"' . implode('","', $product_name) . '"' ?>],
-                datasets: [{
-                    label: 'Total Sale:',
-                    data: [<?= '"' . implode('","', $total_sell) . '"' ?>],
-                    backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)',
-                        'rgb(255, 206, 86)',
-                        'rgb(75, 192, 192)',
-                        'rgb(153, 102, 255)',
-                        'rgb(255, 159, 64)'
-                    ],
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
     </script>
 @endsection
