@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('expanses', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('cat_id')->unsigned();
-            $table->text('remarks');
+            $table->text('remarks')->nullable();
             $table->string('amount');
             $table->bigInteger('company_id')->unsigned();
             $table->bigInteger('created_by')->nullable()->unsigned();

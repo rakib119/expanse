@@ -9,19 +9,26 @@
     <div class="row">
         <div class=" col-12">
             <div class="card mb-5 shadow-sm">
-                <h5 class="card-header">Create New Order</h5>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5>Create New Order</h5>
+                    </div>
+                    <div>
+                        <a class="btn btn-primary" href="{{route('customer.create')}}" >Add Customer</a>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="my-4">
                         <div class="row justify-content-betweeen">
                             <div class="col-md-3">
-                                <label for="name" class="text-capitalize">Customer Name <span>*</span></label>
+                                <label for="name" class="text-capitalize">Customer Name <span>* </span></label>
                                 <select id="name" required class="form-control select2">
                                     <option value="">--Select Customer--</option>
                                     @foreach ($customers as $customer)
-                                        <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                        <option value="{{ $customer->id }}">{{ $customer->name .'('. $customer->company_name .' '. $customer->phone_number .' )' }}</option>
                                     @endforeach
-
                                 </select>
+
                                 <span class="text-danger" id="nameError"> </span>
                             </div>
                             <div class="col-md-3">

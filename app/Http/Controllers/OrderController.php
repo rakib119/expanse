@@ -40,13 +40,11 @@ class OrderController extends Controller
         if ($role_id == 2) {
             $condition = ['company_id' => $user_id];
             $company_id = $user_id;
-        } elseif ($role_id == 3) {
-            $condition = ['manager_id' => $user_id];
-        } elseif ($role_id == 4) {
-            $condition = ['sels_executive_id' => $user_id];
+        } elseif ($role_id == 3 || $role_id == 4) {
+            $condition = ['created_by' => $user_id];
         }
         $products = Product::where('company_id', $company_id)->get(['id', 'name', 'price']);
-        $customers = Customer::where($condition)->get(['id', 'name']);
+        $customers = Customer::where($condition)->get(['id', 'name', 'phone_number', 'company_name']);
         return view('common.order.create', compact('customers', 'products'));
     }
     public function update(OrderDetail $order, Request $request)
@@ -150,6 +148,7 @@ class OrderController extends Controller
         $info = Order::join('customers', 'customers.id', 'orders.customer_id')
             ->join('users', 'users.id', 'orders.created_by')
             ->join('roles', 'roles.id', 'users.role_id')
+            ->where('orders.id', $order_id)
             ->select('orders.id', 'orders.order_amount', 'orders.paid_amount', 'orders.created_at', 'orders.updated_at', 'customers.name as customer_name', 'customers.company_name', 'customers.phone_number', 'customers.created_by', 'customers.address', 'users.name as created_by', 'roles.role_name as designnation')
             ->first();
         $order_details  = OrderDetail::join('products', 'products.id', 'order_details.product_id')
@@ -159,7 +158,7 @@ class OrderController extends Controller
         return  Pdf::loadView('invoice.pdf', compact('info', 'order_details'));
     }
     function printInvoice($order_id)
-    {
+    { 
         $pdf = $this->invoice($order_id);
         $name = date('Y_m_d_h-i-s_A') . '.pdf';
         return $pdf->setPaper('a4')->stream($name);

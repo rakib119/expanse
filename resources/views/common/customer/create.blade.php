@@ -17,12 +17,13 @@
                                 <input  type="text" name="company_name"
                                     class="form-control @error('company_name') is-invalid @enderror " value="{{ old('company_name') }}"
                                     id="company_name">
+
                                 @error('company_name')
                                     <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
-                                <label for="name" class="text-capitalize">Customar Name </label>
+                                <label for="name" class="text-capitalize">Customar Name <span>*</span></label>
                                 <input  type="text" name="name"
                                     class="form-control @error('name') is-invalid @enderror " value="{{ old('name') }}"
                                     id="name">
@@ -40,7 +41,7 @@
                                 @enderror
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
-                                <label for="phone_number" class="text-capitalize">phone number  </label>
+                                <label for="phone_number" class="text-capitalize">phone number  <span>*</span></label>
                                 <input  type="text" name="phone_number"
                                     class="form-control @error('phone_number') is-invalid @enderror " value="{{ old('phone_number') }}"
                                     id="phone_number">

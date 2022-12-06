@@ -1,5 +1,5 @@
 @php
-    $product_active = true;
+    $expanses_active = true;
 @endphp
 @extends('layouts.app')
 @section('main-content')

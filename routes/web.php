@@ -9,6 +9,7 @@ use App\Http\Controllers\ExpanseCategoryController;
 use App\Http\Controllers\ExpanseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Models\OrderDetail;
@@ -28,9 +29,9 @@ Route::resource('user', UserController::class);
 // products
 Route::resource('product', ProductController::class);
 // products
-Route::resource('order', OrderController::class)->except(['destroy','show','update']);
-Route::post('order/details/update/{order?}',[OrderController::class, 'update'])->name('order.update');
-Route::post('order/update/{order?}',[OrderController::class, 'updateOrder'])->name('order-update');
+Route::resource('order', OrderController::class)->except(['destroy', 'show', 'update']);
+Route::post('order/details/update/{order?}', [OrderController::class, 'update'])->name('order.update');
+Route::post('order/update/{order?}', [OrderController::class, 'updateOrder'])->name('order-update');
 Route::get('download/order/invoice/{order}', [OrderController::class, 'downloadInvoice'])->name('order.download');
 Route::get('print/order/invoice/{order}', [OrderController::class, 'printInvoice'])->name('order.print');
 // cart
@@ -51,6 +52,8 @@ Route::resource('expanse', ExpanseController::class)->except('show');
 
 // expense category
 Route::resource('category-expanse', ExpanseCategoryController::class);
+// product category
+Route::resource('category-product', ProductCategoryController::class);
 
 
 

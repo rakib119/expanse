@@ -22,7 +22,7 @@
                                 @enderror
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
-                                <label for="name" class="text-capitalize">Customar Name </label>
+                                <label for="name" class="text-capitalize">Customar Name <span>*</span></label>
                                 <input type="text" name="name"
                                     class="form-control @error('name') is-invalid @enderror " value="{{ $customer->name }}"
                                     id="name">
@@ -40,7 +40,7 @@
                                 @enderror
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
-                                <label for="phone_number" class="text-capitalize">phone number </label>
+                                <label for="phone_number" class="text-capitalize">phone number <span>*</span></label>
                                 <input type="text" name="phone_number"
                                     class="form-control @error('phone_number') is-invalid @enderror "
                                     value="{{ $customer->phone_number }}" id="phone_number">
@@ -60,7 +60,7 @@
                         <div class="row">
                             <div class="col-sm-12 pl-0">
                                 <p class="text-right">
-                                    <button type="submit" class="btn btn-space btn-warning">Submit</button>
+                                    <button type="submit" class="btn btn-space btn-warning">Update</button>
                                 </p>
                             </div>
                         </div>

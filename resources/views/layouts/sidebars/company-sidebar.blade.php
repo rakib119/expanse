@@ -38,7 +38,9 @@
             class="fa fa-fw fa-user-circle"></i>Product</a>
     <div id="Product_sub_menu" class="collapse submenu">
         <ul class="nav flex-column">
-
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('category-product.index') }}">Category List</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link " href="{{ route('product.create') }}">Create</a>
             </li>

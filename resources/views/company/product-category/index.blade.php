@@ -1,5 +1,5 @@
 @php
-    $expanses_active = true;
+    $product_active = true;
     $role_id = auth()->user()->role_id;
 @endphp
 @extends('layouts.app')
@@ -13,10 +13,10 @@
                 <div class="card shadow-sm mb-5">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div>
-                            <h5> Expanse Category List</h5>
+                            <h5> Product Category List</h5>
                         </div>
                         <div>
-                            <a href="{{ route('category-expanse.create') }}" class="btn btn-primary"> <i
+                            <a href="{{ route('category-product.create') }}" class="btn btn-primary"> <i
                                     class="fa fa-plus"></i> Add Category</a>
                         </div>
 
@@ -34,22 +34,19 @@
                                 @foreach ($categories as $category)
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
-                                        <td>{{ $category->e_cat_name }}</td>
+                                        <td>{{ $category->p_cat_name }}</td>
 
                                         <td>
                                             <a class="btn btn-primary"
-                                                href="{{ route('category-expanse.edit', Crypt::encrypt($category->id)) }}">Edit</a>
+                                                href="{{ route('category-product.edit', Crypt::encrypt($category->id)) }}">Edit</a>
                                         </td>
                                     </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 @endsection

@@ -43,9 +43,9 @@ class CustomerController extends Controller
     {
         $request->validate([
             'company_name' => 'max:255',
-            'name' => 'max:255',
+            'name' => 'required|max:255',
             'email' => 'max:255',
-            'phone_number' => 'max:255',
+            'phone_number' => 'required|max:255',
             'address' => 'max:500',
         ]);
 
@@ -67,14 +67,14 @@ class CustomerController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
-            'address' => $request->phone_number,
+            'address' => $request->address,
             'company_id' => $company_id,
             'manager_id' => $manager_id,
             'sels_executive_id' => $sels_executive_id,
             'created_by' => $user_id,
             'created_at' => Carbon::now(),
         ]);
-        return back()->with('success', 'Customer created successfully');
+        return redirect()->route('customer.index')->with('success', 'Customer created successfully');
     }
 
     public function edit($id)
@@ -85,12 +85,12 @@ class CustomerController extends Controller
     }
 
     public function update(Request $request, Customer $customer)
-    {
+    { 
         $request->validate([
-            'company_name' => 'max:255',
+            'company_name' => 'required|max:255',
             'name' => 'max:255',
             'email' => 'max:255',
-            'phone_number' => 'max:255',
+            'phone_number' => 'required|max:255',
             'address' => 'max:500',
         ]);
 
