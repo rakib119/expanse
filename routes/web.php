@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\chartController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpanseCategoryController;
@@ -54,6 +55,9 @@ Route::resource('expanse', ExpanseController::class)->except('show');
 Route::resource('category-expanse', ExpanseCategoryController::class);
 // product category
 Route::resource('category-product', ProductCategoryController::class);
+
+//chart
+Route::post('top/selling/product/chart', [chartController::class, 'topSell'])->name('chart.topsell');
 
 
 

@@ -45,6 +45,7 @@
                     }
                 }
             });
+            return myChart;
         }
 //# sourceMappingURL=chart.umd.js.map
 //
