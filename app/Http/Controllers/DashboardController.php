@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Expanse;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
@@ -44,17 +44,15 @@ class DashboardController extends Controller
     private function companyDashboard()
     {
         $auth_id = auth()->id();
+        $order = Order::where('company_id', $auth_id);
         $figers = new stdClass;
-        $figers->total_employee = User::where(['company_id' => $auth_id])->count();
-        $figers->total_product = Product::where(['company_id' => $auth_id])->count();
-        $figers->total_order = Order::where(['company_id' => $auth_id])->whereMonth('created_at', Carbon::now()->month)->count();
-        $figers->total_customer = Customer::where(['company_id' => $auth_id])->count();
-
-        $orders = OrderDetail::join('products', 'products.id', 'order_details.product_id')->select('products.name', DB::raw('count(order_details.product_id) as total'))->groupBy('products.name')->orderBy('total', 'desc')->take(10);
-        $product_name =  $orders->pluck('products.name')->toArray();
-        $total_sell =  $orders->pluck('total')->toArray();
-
-        return view('company.dashboard', compact('product_name', 'total_sell', 'figers'));
+        $figers->total_sales = $order->sum('order_amount');
+        $figers->total_payment = $order->sum('paid_amount');
+        $figers->total_due = $figers->total_sales - $figers->total_payment;
+        $figers->total_expanse = Expanse::where(['company_id' => $auth_id])->sum('amount');
+        $figers->total_profit = $figers->total_payment - $figers->total_expanse;
+        $figers->net_profit = number_format(($figers->total_profit / $figers->total_payment)*100 , 2) ;
+        return view('company.dashboard', compact('figers'));
     }
 
     private function managerDashboard()

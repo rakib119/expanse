@@ -7,13 +7,6 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
                 <h2 class="pageheader-title">Dashboard </h2>
-                <div class="page-breadcrumb">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item active"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                        </ol>
-                    </nav>
-                </div>
             </div>
         </div>
     </div>
@@ -21,7 +14,7 @@
         <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                 <div class="card border-top-primary shadow-sm h-100">
-                    <div class="card-body">
+                    <div class="card-body bg-success">
                         <h5 class="text-muted mb-4">Total Orders</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
@@ -33,7 +26,7 @@
             </div>
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                 <div class="card border-top-primary shadow-sm h-100">
-                    <div class="card-body">
+                    <div class="card-body bg-warning">
                         <h5 class="text-muted mb-4">New Order</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
@@ -45,7 +38,7 @@
             </div>
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                 <div class="card border-top-primary shadow-sm h-100">
-                    <div class="card-body">
+                    <div class="card-body"  style="background: #059BFF">
                         <h5 class="text-muted mb-4">Total Customer</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
@@ -57,7 +50,7 @@
             </div>
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                 <div class="card border-top-primary shadow-sm h-100">
-                    <div class="card-body">
+                    <div class="card-body"  style="background: #22CFCF">
                         <h5 class="text-muted mb-4">New Customer</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
@@ -68,5 +61,93 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-12 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-0">Orders</h5>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="selfPerformance" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-12 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-0">Amount</h5>
+                            </div>
+                            <div>
+                                <select onchange="amountChart();" id='shortAmountChart' class="custom-form">
+                                    <option value="1">This Year</option>
+                                    <option value="2">This Month</option>
+                                    <option value="3">This week</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="amountChart" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+@endsection
+@section('javascript')
+    <script src="{{ asset('assets/js/chart.js') }}"></script>
+    <script>
+        var oldAmountChart;
+
+        function ajaxSetup() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        }
+        topSalesExecutiveChart();
+        amountChart();
+
+        function topSalesExecutiveChart() {
+            ajaxSetup();
+            $.ajax({
+                type: "post",
+                url: '{{ route('chart.selfPerfomance') }}',
+                success: function(results) {
+                    let month = results.month;
+                    let sum = results.sum;
+                    showChart('#selfPerformance', 'bar', 'Total Sales', month, sum);
+                },
+            });
+        }
+
+        function amountChart() {
+            if (oldAmountChart) {
+                oldAmountChart.destroy();
+            }
+            ajaxSetup();
+            let shortBy = $('#shortAmountChart').val();
+            $.ajax({
+                type: "post",
+                url: '{{ route('chart.amount') }}',
+                data: {
+                    shortBy: shortBy
+                },
+                success: function(results) {
+                    let categories = results.categories;
+                    let amounts = results.amounts;
+                    oldAmountChart = showChart('#amountChart', 'pie', 'Amount', categories, amounts);
+
+                },
+            });
+        }
+    </script>
 @endsection

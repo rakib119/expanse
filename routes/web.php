@@ -58,6 +58,12 @@ Route::resource('category-product', ProductCategoryController::class);
 
 //chart
 Route::post('top/selling/product/chart', [chartController::class, 'topSell'])->name('chart.topsell');
+Route::post('get/expanse/chart', [chartController::class, 'expanseChart'])->name('chart.expanse');
+Route::post('busieness/progress', [chartController::class, 'progressChart'])->name('chart.progress');
+Route::post('top/sales/man', [chartController::class, 'topSalesExecutiveChart'])->name('chart.salesman');
+Route::post('perfomance/sales/man', [chartController::class, 'salesManPerfomance'])->name('chart.salesman_perfomance');
+Route::post('self/perfomance', [chartController::class, 'selfPerfomanceSaLesMan'])->name('chart.selfPerfomance');
+Route::post('amount/chart', [chartController::class, 'amountChart'])->name('chart.amount');
 
 
 
