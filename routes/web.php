@@ -26,6 +26,8 @@ Route::middleware('auth')->group(function () {
 Auth::routes(['register' => false]);
 // user
 Route::resource('user', UserController::class);
+Route::get('change/password', [UserController::class,'changePasswordForm'])->name('password.change');
+Route::post('change/password', [UserController::class,'changePassword'])->name('password.change');
 
 // products
 Route::resource('product', ProductController::class);
@@ -41,14 +43,7 @@ Route::post('cart/destroy', [CartController::class, 'destroy'])->name('cart.dest
 Route::post('cart/store', [CartController::class, 'store'])->name('cart.store');
 // customers
 Route::resource('customer', CustomerController::class);
-// expense
-//  Route::controller( ExpanseController::class)->prefix('expanse')->group(function(){
-//     Route::get('/','index')->name('expanse.index');
-//     Route::get('create','create')->name('expanse.create');
-//     Route::post('store','store')->name('expanse.store');
-//     Route::get('edit/{expanse_id}','edit')->name('expanse.edit');
-//     Route::put('update/{expanse_id}','')->name('expanse.update');
-//  });
+
 Route::resource('expanse', ExpanseController::class)->except('show');
 
 // expense category

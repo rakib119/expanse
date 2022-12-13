@@ -9,7 +9,6 @@
 @section('main-content')
     <div class="ecommerce-widget">
         <div class="row">
-
             <div class="col-12 mb-4">
                 <div class="card shadow-sm mb-5">
                     <h5 class="card-header">{{ $role_id == 1 ? 'Company' : 'Employee' }} List</h5>
@@ -18,7 +17,11 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">Photo</th>
                                     <th scope="col">Name</th>
+                                    @if ($role_id == 2 || $role_id == 3)
+                                        <th scope="col">commission</th>
+                                    @endif
                                     <th scope="col">Email</th>
                                     <th scope="col">Phone Number</th>
                                     @if ($role_id == 2)
@@ -40,12 +43,19 @@
                                     @endphp
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
+                                        <td> <img class="img-fluid" width="50" height="50"
+                                                src="{{ asset('assets/images/profile/' . $user->profile_photo) }}"
+                                                alt=""> </td>
                                         <td>{{ $user->name }}</td>
+                                        @if ($role_id == 2 || $role_id == 3)
+                                            <td>{{ $user->commission }}%</td>
+                                        @endif
                                         <td>{{ $user->email ? $user->email : 'N/A' }}</td>
                                         <td>{{ $user->phone_number ? $user->phone_number : 'N/A' }}</td>
                                         @if ($role_id == 2)
                                             <th scope="col"> <span
-                                                    class="badge text-light {{ $bg_color }}">{{$role }}</span> </th>
+                                                    class="badge text-light {{ $bg_color }}">{{ $role }}</span>
+                                            </th>
                                         @endif
                                         <td>
                                             <div class="dropdown show">
@@ -54,24 +64,23 @@
                                                     aria-expanded="false">
                                                     Action
                                                 </a>
-
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="{{route('user.edit',Crypt::encrypt($user->id))}}">Edit</a>
-                                                    {{-- <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else here</a> --}}
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('user.edit', Crypt::encrypt($user->id)) }}">Edit</a>
+                                                    @if ($role_id == 2 || $role_id == 3)
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('user.show', Crypt::encrypt($user->id)) }}">Dashboard</a>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 @endsection

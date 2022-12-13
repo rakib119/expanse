@@ -6,6 +6,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
+use League\CommonMark\Extension\SmartPunct\DashParser;
+use Spatie\FlareClient\Http\Exceptions\NotFound;
 
 class UserController extends Controller
 {
@@ -51,6 +55,8 @@ class UserController extends Controller
             'mobile' => 'nullable|max:30',
             'role' => 'required',
             'password' => 'required',
+            'commission' => 'nullable|integer|min:0|max:100',
+            'profile_photo' => 'nullable|mimes:jpg,jpeg'
         ]);
 
         $auth_role = auth()->user()->role_id;
@@ -67,23 +73,39 @@ class UserController extends Controller
         if ($error_flag) {
             return back()->withErrors(['role' => 'Invalid Role']);
         } else {
+            $photo_name = 'avatar-1.jpg';
+            if ($request->hasFile('profile_photo')) {
+                $photo_name = Str::random(40) . auth()->id() . "." . $request->file('profile_photo')->getClientOriginalExtension();
+                $save_link = base_path("public/assets/images/profile/$photo_name");
+                Image::make($request->file('profile_photo'))->save($save_link);
+            }
             User::insert([
                 'name' => $request->name,
                 'email' => $request->email,
+                'commission' => $request->commission,
                 'phone_number' => $request->mobile,
+                'profile_photo' =>  $photo_name,
                 'company_id' =>  $company_id,
                 'manager_id' =>  $manager_id,
                 'role_id' => $request->role,
                 'password' => Hash::make($request->password),
                 'created_at' => now(),
             ]);
+
             return redirect()->route('user.index')->with('success', 'submited successfully');
         }
     }
 
 
-    public function show(User $user)
+    public function show($id)
     {
+        $user  = User::where('id', Crypt::decrypt($id))->first(['role_id', 'id']);
+        $user->role_id;
+        if ($user->role_id == 3) {
+            return DashboardController::managerDashboard($user->id);
+        } elseif ($user->role_id == 4) {
+            return DashboardController::salesExecutiveDashboard($user->id);
+        }
     }
 
 
@@ -103,11 +125,25 @@ class UserController extends Controller
                 'email' => 'required|max:30',
                 'mobile' => 'nullable|max:30',
                 'role' => 'required',
+                'commission' => 'nullable|integer|min:0|max:100',
+                'profile_photo' => 'nullable|mimes:jpg,jpeg'
             ]);
+            if ($request->hasFile('profile_photo')) {
+                $file_location = public_path("assets/images/profile/$user->profile_photo");
+                if ($user->profile_photo != 'avatar-1.jpg' && file_exists($file_location)) {
+                    unlink($file_location);
+                }
+                // get file extention
+                $photo_name = Str::random(40) . auth()->id() . "." . $request->file('profile_photo')->getClientOriginalExtension();
+                $save_link = base_path("public/assets/images/profile/$photo_name");
+                Image::make($request->file('profile_photo'))->save($save_link);
+                $user->profile_photo = $photo_name;
+            }
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phone_number = $request->mobile;
             $user->role_id = $request->role;
+            $user->commission = $request->commission;
             $user->updated_by = auth()->id();
             $user->save();
             return redirect()->route('user.index')->with('success', 'User updated successfully');
@@ -138,5 +174,34 @@ class UserController extends Controller
         return  User::where('company_id', $auth->company_id)
             ->where(['role_id' => 4, 'manager_id' => $auth->id])
             ->orderBy('id', 'desc')->get();
+    }
+    // change password
+    public function changePasswordForm()
+    {
+        return view('auth.passwords.change');
+    }
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|alpha_num|min:8',
+            'password_confirmation' => 'required',
+        ]);
+        $request->validate([
+            'password' => 'confirmed',
+        ]);
+        if ($request->current_password == $request->password) {
+            return back()->withErrors(['current_password' => "Current password and New Password can't be same!"]);
+        }
+        // check password Matched or not
+        $value = $request->current_password;
+        $hashedValue = auth()->user()->password;
+        if (!Hash::check($value, $hashedValue)) {
+            return back()->withErrors(['current_password' => "Your Current password is wrong!"]);
+        }
+        User::find(auth()->id())->update(
+            ['password' => bcrypt($request->password)]
+        );
+        return  back()->with('success', 'password changed successfully');
     }
 }

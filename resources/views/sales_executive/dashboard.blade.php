@@ -6,19 +6,28 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
-                <h2 class="pageheader-title">Dashboard </h2>
+                @if ($figers->name)
+                    <h2 class="pageheader-title"> Dashboard OF <span class="text-primary"> {{$figers->name}}</span></h2>
+                @else
+                    <h2 class="pageheader-title"> Dashboard </h2>
+                @endif
             </div>
         </div>
     </div>
+    <input value="{{ $figers->user_id }}" type="hidden" id="user_id">
     <div class="ecommerce-widget">
         <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                 <div class="card border-top-primary shadow-sm h-100">
                     <div class="card-body bg-success">
-                        <h5 class="text-muted mb-4">Total Orders</h5>
+                        <h5 class="text-muted mb-4">Orders</h5>
                         <div class="d-flex justify-content-between">
-                            <div class="metric-value">
-                                <h1 class="font-weight-bold">{{ $figers->total_order }}</h1>
+                            <div>
+                                <h2 class="font-weight-bold">৳{{ $figers->total_order }}</h2>
+                            </div>
+                            <div>
+                                <h6><span class="text-danger">Paid:</span>  ৳{{ $figers->total_paid }}</h6>
+                                <h6><span class="text-danger">Due:</span> ৳{{ $figers->total_order - $figers->total_paid }}</h6>
                             </div>
                         </div>
                     </div>
@@ -27,10 +36,14 @@
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                 <div class="card border-top-primary shadow-sm h-100">
                     <div class="card-body bg-warning">
-                        <h5 class="text-muted mb-4">New Order</h5>
+                        <h5 class="text-muted mb-4">Orders <span style="font-size: 9px;color:#ff056d">(This Month)</span></h5>
                         <div class="d-flex justify-content-between">
-                            <div class="metric-value">
-                                <h1 class="font-weight-bold">{{ $figers->new_order }}</h1>
+                            <div>
+                                <h2 class="font-weight-bold">৳{{ $figers->new_order }}</h2>
+                            </div>
+                            <div>
+                                <h6><span class="text-danger">Paid:</span>  ৳{{ $figers->new_paid_amount }}</h6>
+                                <h6><span class="text-danger">Due:</span> ৳{{ $figers->new_order - $figers->new_paid_amount }}</h6>
                             </div>
                         </div>
                     </div>
@@ -38,11 +51,11 @@
             </div>
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                 <div class="card border-top-primary shadow-sm h-100">
-                    <div class="card-body"  style="background: #059BFF">
-                        <h5 class="text-muted mb-4">Total Customer</h5>
+                    <div class="card-body" style="background: #059BFF">
+                        <h5 class="text-muted mb-4">Commission</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
-                                <h1 class="font-weight-bold">{{ $figers->total_customer }}</h1>
+                                <h1 class="font-weight-bold">৳{{ $figers->total_commission }}</h1>
                             </div>
                         </div>
                     </div>
@@ -50,11 +63,11 @@
             </div>
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                 <div class="card border-top-primary shadow-sm h-100">
-                    <div class="card-body"  style="background: #22CFCF">
-                        <h5 class="text-muted mb-4">New Customer</h5>
+                    <div class="card-body" style="background: #22CFCF">
+                        <h5 class="text-muted mb-4">Commission <span style="font-size: 9px;color:#ff056d">(This Month)</span></h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
-                                <h1 class="font-weight-bold">{{ $figers->new_customer }}</h1>
+                                <h1 class="font-weight-bold">৳{{ $figers->new_commission }}</h1>
                             </div>
                         </div>
                     </div>
@@ -105,7 +118,7 @@
     <script src="{{ asset('assets/js/chart.js') }}"></script>
     <script>
         var oldAmountChart;
-
+        var user_id = $('#user_id').val();
         function ajaxSetup() {
             $.ajaxSetup({
                 headers: {
@@ -121,6 +134,9 @@
             $.ajax({
                 type: "post",
                 url: '{{ route('chart.selfPerfomance') }}',
+                data: {
+                    user_id: user_id,
+                },
                 success: function(results) {
                     let month = results.month;
                     let sum = results.sum;
@@ -139,7 +155,8 @@
                 type: "post",
                 url: '{{ route('chart.amount') }}',
                 data: {
-                    shortBy: shortBy
+                    shortBy: shortBy,
+                    user_id: user_id,
                 },
                 success: function(results) {
                     let categories = results.categories;

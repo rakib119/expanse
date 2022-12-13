@@ -282,17 +282,18 @@
             }
             ajaxSetup();
             let shortBy = $('#shortForTopSell').val();
+            let user_id = {{auth()->id()}}
             $.ajax({
                 type: "post",
                 url: '{{ route('chart.amount') }}',
                 data: {
-                    shortBy: shortBy
+                    shortBy: shortBy,
+                    user_id: user_id,
                 },
                 success: function(results) {
                     let categories = results.categories;
                     let amounts = results.amounts;
                     oldAmountChart = showChart('#amountChart', 'pie', 'Amount', categories, amounts);
-
                 },
             });
         }

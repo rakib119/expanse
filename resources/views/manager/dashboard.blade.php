@@ -6,17 +6,15 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
-                <h2 class="pageheader-title">Dashboard </h2>
-                <div class="page-breadcrumb">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item active"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                        </ol>
-                    </nav>
-                </div>
+                @if ($figers->name)
+                    <h2 class="pageheader-title"> Dashboard OF <span class="text-primary"> {{ $figers->name }}</span></h2>
+                @else
+                    <h2 class="pageheader-title"> Dashboard </h2>
+                @endif
             </div>
         </div>
     </div>
+    <input value="{{ $figers->user_id }}" type="hidden" id="user_id">
     <div class="ecommerce-widget">
         <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
@@ -45,7 +43,7 @@
             </div>
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                 <div class="card border-top-primary shadow-sm h-100">
-                    <div class="card-body"  style="background: #059BFF">
+                    <div class="card-body" style="background: #059BFF">
                         <h5 class="text-muted mb-4">Total Customer</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
@@ -57,7 +55,7 @@
             </div>
             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mb-4">
                 <div class="card border-top-primary shadow-sm h-100">
-                    <div class="card-body"  style="background: #22CFCF">
+                    <div class="card-body" style="background: #22CFCF">
                         <h5 class="text-muted mb-4">New Customer</h5>
                         <div class="d-flex justify-content-between">
                             <div class="metric-value">
@@ -77,8 +75,7 @@
                                 <h5 class="mb-0"> Top Seles Executive</h5>
                             </div>
                             <div>
-                                <select onchange="topSalesExecutiveChart();" id='shortSalesExecutiveChart'
-                                    class="custom-form">
+                                <select onchange="shortChart();" id='shortSalesExecutiveChart' class="custom-form">
                                     <option value="1">This Year</option>
                                     <option value="2">This Month</option>
                                     <option value="3">This week</option>
@@ -99,13 +96,6 @@
                             <div>
                                 <h5 class="mb-0">Amount</h5>
                             </div>
-                            <div>
-                                <select onchange="amountChart();" id='shortAmountChart' class="custom-form">
-                                    <option value="1">This Year</option>
-                                    <option value="2">This Month</option>
-                                    <option value="3">This week</option>
-                                </select>
-                            </div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -120,6 +110,7 @@
     <script src="{{ asset('assets/js/chart.js') }}"></script>
     <script>
         var salesExecutiveChart, oldAmountChart;
+        var user_id = $('#user_id').val();
 
         function ajaxSetup() {
             $.ajaxSetup({
@@ -128,8 +119,13 @@
                 }
             });
         }
-        topSalesExecutiveChart();
-        amountChart();
+        shortChart();
+
+        function shortChart() {
+            topSalesExecutiveChart();
+            amountChart();
+        }
+
 
         function topSalesExecutiveChart() {
             if (salesExecutiveChart) {
@@ -141,7 +137,8 @@
                 type: "post",
                 url: '{{ route('chart.salesman_perfomance') }}',
                 data: {
-                    shortBy: shortBy
+                    shortBy: shortBy,
+                    user_id: user_id,
                 },
                 success: function(results) {
                     let user_name = results.user_name;
@@ -157,12 +154,13 @@
                 oldAmountChart.destroy();
             }
             ajaxSetup();
-            let shortBy = $('#shortAmountChart').val();
+            let shortBy = $('#shorttopSalesExecutiveChart').val();
             $.ajax({
                 type: "post",
                 url: '{{ route('chart.amount') }}',
                 data: {
-                    shortBy: shortBy
+                    shortBy: shortBy,
+                    user_id: user_id,
                 },
                 success: function(results) {
                     let categories = results.categories;

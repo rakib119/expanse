@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Expanse;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -114,13 +115,15 @@ class chartController extends Controller
     }
     public function salesManPerfomance(Request $request)
     {
+        $id =  $request->user_id;
+        $user = User::where('id',$id)->first(['company_id']);
         $shortBy = $request->shortBy;
-        $company_id = auth()->user()->company_id;
+        $company_id = $user->company_id;
 
         $orders =   Order::join('users', 'users.id', 'orders.created_by')
             ->select('users.name as user_name', DB::raw('sum(orders.order_amount) as total_order'))
             ->where('orders.company_id', $company_id)
-            ->where('users.manager_id', auth()->id())
+            ->where('users.manager_id',  $id)
             ->groupBy('users.name')
             ->where('users.role_id', 4);
 
@@ -139,13 +142,14 @@ class chartController extends Controller
         ]);
     }
 
-    public function selfPerfomanceSaLesMan()
+    public function selfPerfomanceSaLesMan(Request $request)
     {
+        $id =  $request->user_id;
         $orders =  Order::select(
             DB::raw('sum(order_amount) as sum'),
             DB::raw("DATE_FORMAT(created_at,'%b') as month")
         )
-            ->where('created_by', auth()->id())
+            ->where('created_by',$id )
             ->groupBy('month')
             ->orderBy('created_at', 'ASC')
             ->take(12);
@@ -160,8 +164,10 @@ class chartController extends Controller
     public function amountChart(Request $request)
     {
         $shortBy = $request->shortBy;
-        $id = auth()->id();
-        if (auth()->user()->role_id == 2) {
+        $id =  $request->user_id;
+        $role_id = User::where('id',$id)->first('role_id')->role_id;
+        // fatch user role
+        if ($role_id == 2) {
             $column = 'company_id';
         } else {
             $column = 'created_by';
