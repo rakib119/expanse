@@ -24,7 +24,7 @@ return new class extends Migration
             $table->bigInteger('company_id')->nullable()->unsigned();
             $table->bigInteger('manager_id')->nullable()->unsigned();
             $table->rememberToken();
-            $table->integer('commission')->default(0);
+            $table->string('commission',11)->default('0');
             $table->string('profile_photo')->default('avatar-1.jpg');
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();

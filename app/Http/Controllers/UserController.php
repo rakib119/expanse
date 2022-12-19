@@ -82,7 +82,7 @@ class UserController extends Controller
             User::insert([
                 'name' => $request->name,
                 'email' => $request->email,
-                'commission' => $request->commission,
+                'commission' => ($request->commission ? $request->commission : 0),
                 'phone_number' => $request->mobile,
                 'profile_photo' =>  $photo_name,
                 'company_id' =>  $company_id,
