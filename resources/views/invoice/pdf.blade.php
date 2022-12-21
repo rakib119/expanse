@@ -10,6 +10,15 @@
         }
         return $number;
     }
+    $due = $info->order_amount - $info->paid_amount;
+    if ($due < 1) {
+        $payment_status  ='PAID';
+        $payment_color  = 'green';
+    }else {
+        $payment_status  ='DUE';
+        $payment_color  ='red';
+    }
+
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -136,7 +145,7 @@
                     <p><b>Contact</b><br>{{$info->customer_name}} <br>{{$info->phone_number}} </p>
                 </td>
                 <td>
-                    <p style="font-weight: 400;background: red; padding:5px 35px; color:#fff; "> {{($info->order_amount - $info->paid_amount)< 1 ? 'PAID' : 'DUE'}}</p>
+                    <p style="font-weight: 400;background: {{$payment_color}}; padding:5px 35px; color:#fff; "> {{$payment_status}}</p>
                 </td>
             </tr>
         </table>

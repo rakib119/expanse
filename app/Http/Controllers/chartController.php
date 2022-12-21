@@ -18,7 +18,7 @@ class chartController extends Controller
         $company_id = auth()->id();
         $orders = OrderDetail::join('products', 'products.id', 'order_details.product_id')
             ->join('orders', 'orders.id', 'order_details.order_id')
-            ->select('products.name', DB::raw('count(order_details.product_id) as total'))
+            ->select('products.name', DB::raw('sum(order_details.quantity) as total'))
             ->where('orders.company_id', $company_id)
             ->groupBy('products.name')
             ->orderBy('total', 'desc');

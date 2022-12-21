@@ -50,11 +50,11 @@ class UserController extends Controller
         }
 
         $request->validate([
-            'name' => 'required|max:20',
-            'email' => 'required|max:30',
+            'name' => 'required|max:30',
+            'email' => 'required|max:50|unique:users',
             'mobile' => 'nullable|max:30',
             'role' => 'required',
-            'password' => 'required',
+            'password' => 'required|min:5',
             'commission' => 'nullable|integer|min:0|max:100',
             'profile_photo' => 'nullable|mimes:jpg,jpeg'
         ]);

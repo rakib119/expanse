@@ -51,7 +51,11 @@ class DashboardController extends Controller
         $figers->total_due = $figers->total_sales - $figers->total_payment;
         $figers->total_expanse = Expanse::where(['company_id' => $auth_id])->sum('amount');
         $figers->total_profit = $figers->total_payment - $figers->total_expanse;
-        $figers->net_profit = number_format(($figers->total_profit / (!$figers->total_payment) ? $figers->total_payment : 0) * 100, 2);
+        if ($figers->total_profit > 0 &&   $figers->total_profit > 0) {
+            $figers->net_profit = number_format(($figers->total_profit /  $figers->total_payment) * 100, 2);
+        }else{
+            $figers->net_profit = 0;
+        }
         return view('company.dashboard', compact('figers'));
     }
 
@@ -79,7 +83,7 @@ class DashboardController extends Controller
     {
         if ($id) {
             $auth_id = $id;
-            $user = User::where('id', $auth_id)->first(['name', ''])->name;
+            $user = User::where('id', $auth_id)->first('name');
             $name = $user->name;
             $commission = $user->commission;
         } else {

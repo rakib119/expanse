@@ -52,7 +52,7 @@
                                 <div class="col-lg-4 col-sm-12 mb-3">
                                     <label for="commission" class="text-capitalize">Commission <span
                                             class="text-danger">(%)</span></label>
-                                    <input type="number" name="commission" value="0" min="0" max="100"
+                                    <input value="{{ $user->commission }}" type="number" name="commission" value="0" min="0" max="100"
                                         class="form-control @error('commission') is-invalid @enderror " id="commission">
                                     @error('commission')
                                         <span class="text-danger"> {{ $message }}</span>
